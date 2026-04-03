@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import MobileLayout from '@/components/MobileLayout';
 import { mockCases } from '@/data/mockData';
+import { getPublisherForCase } from '@/data/publishers';
+import PublisherBadge from '@/components/PublisherBadge';
 import { ArrowLeft, Share2, MapPin, Phone, Shield, CheckCircle2, Clock, Link2 } from 'lucide-react';
 import { toast } from 'sonner';
 
