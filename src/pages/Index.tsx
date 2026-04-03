@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import MobileLayout from '@/components/MobileLayout';
 import { mockUser, mockCases } from '@/data/mockData';
-import { Search, MapPin, ChevronRight, AlertTriangle, SlidersHorizontal, PawPrint, Heart, Map, Package } from 'lucide-react';
+import { Search, MapPin, SlidersHorizontal, PawPrint, Heart, Map, Package } from 'lucide-react';
 import CaseCard from '@/components/CaseCard';
 import { useState } from 'react';
 
