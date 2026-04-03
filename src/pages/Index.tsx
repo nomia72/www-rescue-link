@@ -83,22 +83,7 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Emergency Banner */}
-        {urgentCount > 0 && (
-          <button
-            onClick={() => navigate('/channel/emergency')}
-            className="mt-3 flex w-full items-center gap-3 rounded-2xl bg-urgent/8 px-3.5 py-3 ring-1 ring-urgent/20 transition-colors active:bg-urgent/15"
-          >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-urgent/15">
-              <AlertTriangle className="h-5 w-5 text-urgent" />
-            </div>
-            <div className="flex-1 text-left">
-              <p className="text-[14px] font-semibold text-urgent">紧急求助</p>
-              <p className="text-[12px] text-urgent/70">{urgentCount} 个个案需要快速接力</p>
-            </div>
-            <ChevronRight className="h-4 w-4 text-urgent/50" />
-          </button>
-        )}
+        {/* Emergency banner removed — urgent cases surface via sort priority */}
 
         {/* Channels — lightweight entry cards */}
         <div className="mt-3 grid grid-cols-3 gap-2">
