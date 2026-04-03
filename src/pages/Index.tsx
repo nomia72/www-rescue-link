@@ -38,37 +38,16 @@ const Index = () => {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-[14px] text-header-fg/70">我的助力值</p>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1.5">
-                <PawPrint className="h-5 w-5 text-primary" strokeWidth={2.2} />
-                <p className="text-3xl font-bold text-header-fg">{mockUser.totalPoints}</p>
-              </div>
+            <div className="flex items-center gap-1.5">
+              <PawPrint className="h-5 w-5 text-primary" strokeWidth={2.2} />
+              <p className="text-3xl font-bold text-header-fg">{mockUser.totalPoints}</p>
             </div>
-          </div>
-          <div className="flex items-center gap-4 text-[13px] text-header-fg/75">
-            <div className="flex flex-col items-center">
-              <span className="text-lg font-semibold text-header-fg">{mockUser.helpsGiven}</span>
-              <span>次助力</span>
-            </div>
-            <div className="h-7 w-px bg-header-fg/15" />
-            <div className="flex flex-col items-center">
-              <span className="text-lg font-semibold text-header-fg">6</span>
-              <span>个案</span>
-            </div>
-            <div className="h-7 w-px bg-header-fg/15" />
-            <div className="flex flex-col items-center">
-              <span className="text-lg font-semibold text-header-fg">3</span>
-              <span>项认领</span>
-            </div>
-          </div>
-        </div>
-        <button
-          onClick={() => navigate('/help-center')}
-          className="mt-1 text-[12px] text-header-fg/40 font-normal"
-        >
-          查看助力任务
-        </button>
-            </div>
+            <button
+              onClick={() => navigate('/help-center')}
+              className="mt-0.5 text-[12px] text-header-fg/35 font-normal"
+            >
+              查看助力任务
+            </button>
           </div>
           <div className="flex items-center gap-4 text-[13px] text-header-fg/75">
             <div className="flex flex-col items-center">
