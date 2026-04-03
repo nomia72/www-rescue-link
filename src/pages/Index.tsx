@@ -52,8 +52,8 @@ const Index = () => {
         {/* B. Light status bar */}
         <div className="mt-3 flex items-center justify-between rounded-xl bg-card px-4 py-2.5 shadow-sm">
           <div className="flex items-center gap-1 text-[13px]">
-            <span className="text-muted-foreground">今日紧急</span>
-            <span className="font-bold text-urgent">{urgentCount}</span>
+            <span className="text-muted-foreground">进行中个案</span>
+            <span className="font-bold text-foreground">{totalCases}</span>
           </div>
           <div className="h-4 w-px bg-border" />
           <div className="flex items-center gap-1 text-[13px]">
