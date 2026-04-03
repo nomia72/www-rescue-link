@@ -223,7 +223,7 @@ export const mockCases: CaseItem[] = [
     id: '5',
     title: '高速路边发现受伤流浪犬',
     animalType: '狗',
-    status: '医院治疗中',
+    status: '治疗中',
     location: '深圳市南山区',
     city: '深圳',
     distance: '2.3km',

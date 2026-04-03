@@ -45,17 +45,17 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
         {/* Left: Photo */}
         <div className="relative w-[30%] shrink-0 overflow-hidden">
           <img src={imgSrc} alt={caseItem.title} loading="lazy" className="h-full w-full object-cover" style={{ minHeight: '160px' }} />
-          {caseItem.isUrgent && (
-            <span className="absolute left-1.5 top-1.5 rounded-md bg-urgent px-2 py-0.5 text-[11px] font-bold text-urgent-foreground">紧急</span>
-          )}
         </div>
 
         {/* Right: Info */}
         <div className="flex w-[70%] flex-col justify-between p-3">
-          {/* Row 1: Case # + Tags + Star */}
+          {/* Row 1: Case # + Urgency + Status + Animal + Star */}
           <div className="flex items-center justify-between">
             <div className="flex flex-wrap items-center gap-1.5">
               <span className="text-[12px] font-medium text-muted-foreground">#{formattedNo}</span>
+              {caseItem.isUrgent && (
+                <span className="rounded-md bg-urgent px-1.5 py-0.5 text-[11px] font-bold text-urgent-foreground">紧急</span>
+              )}
               <span className="rounded-md bg-accent/15 px-1.5 py-0.5 text-[11px] font-medium text-accent-foreground">{caseItem.status}</span>
               <span className="rounded-md bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground">
                 {caseItem.animalType === '猫' ? '🐱' : '🐶'} {caseItem.animalType}

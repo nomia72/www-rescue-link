@@ -88,14 +88,14 @@ const Index = () => {
           })}
         </div>
 
-        {/* D. Primary filter: help type */}
+        {/* D. Primary filter: status */}
         <div className="mt-3 flex gap-0.5 overflow-x-auto rounded-xl bg-muted p-0.5 hide-scrollbar">
-          {['全部', '紧急', '待送医', '治疗中', '待安置'].map((f) => (
+          {['全部', '待接应', '待送医', '治疗中', '待安置', '已完成'].map((f) => (
             <button
               key={f}
-              onClick={() => setHelpTypeFilter(f)}
+              onClick={() => setStatusFilter(f)}
               className={`shrink-0 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors ${
-                helpTypeFilter === f ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground'
+                statusFilter === f ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground'
               }`}
             >
               {f}
@@ -103,14 +103,14 @@ const Index = () => {
           ))}
         </div>
 
-        {/* E. Secondary filter: animal type + nearby */}
+        {/* E. Secondary filter: urgency + animal + nearby */}
         <div className="mt-2 flex gap-1.5 overflow-x-auto hide-scrollbar">
-          {['全部', '猫', '狗', '其他', '附近'].map((f) => (
+          {['全部', '紧急', '猫', '狗', '附近'].map((f) => (
             <button
               key={f}
-              onClick={() => setAnimalFilter(f === '附近' ? animalFilter : f)}
+              onClick={() => setAuxFilter(f)}
               className={`shrink-0 rounded-full px-3 py-1 text-[12px] font-medium transition-colors ${
-                (f !== '附近' && animalFilter === f) ? 'bg-primary text-primary-foreground' : 'bg-card text-muted-foreground shadow-sm'
+                auxFilter === f ? 'bg-primary text-primary-foreground' : 'bg-card text-muted-foreground shadow-sm'
               }`}
             >
               {f}
