@@ -79,7 +79,7 @@ export interface LostPetClue {
 export const mockUser = {
   name: '小明',
   avatar: '',
-  totalPoints: 1280,
+  totalPoints: 600,
   todayEarned: 35,
   todayRemaining: 65,
   level: '爱心守护者',

@@ -71,7 +71,7 @@ const Index = () => {
           </button>
           <div className="flex flex-1 items-center gap-2 rounded-xl bg-card px-3.5 py-2.5 shadow-sm">
             <Search className="h-4 w-4 text-muted-foreground" />
-            <span className="text-[12px] text-muted-foreground">搜索救助个案编号、地点、用户名、关键词...</span>
+            <span className="text-[12px] text-muted-foreground">搜索个案编号、用户名、关键词...</span>
           </div>
         </div>
 
