@@ -21,6 +21,7 @@ const CaseDetail = () => {
 
   const remaining = caseItem.totalPoints - caseItem.earnedPoints;
   const progress = (caseItem.earnedPoints / caseItem.totalPoints) * 100;
+  const publisher = getPublisherForCase(caseItem.id);
 
   return (
     <MobileLayout hideTabBar>
