@@ -19,12 +19,12 @@ const MobileLayout = ({ children, hideTabBar }: MobileLayoutProps) => {
   const location = useLocation();
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-[640px] flex-col bg-background">
+    <div className="mx-auto flex min-h-screen w-full sm:max-w-[430px] flex-col bg-background">
       <main className={`flex-1 ${hideTabBar ? '' : 'pb-16'}`}>
         {children}
       </main>
       {!hideTabBar && (
-        <nav className="fixed bottom-0 left-1/2 z-50 w-full max-w-[640px] -translate-x-1/2 border-t border-border bg-card safe-bottom">
+        <nav className="fixed bottom-0 left-1/2 z-50 w-full sm:max-w-[430px] -translate-x-1/2 border-t border-border bg-card safe-bottom">
           <div className="flex h-14 items-center justify-around">
             {tabs.map((tab) => {
               const isActive = location.pathname === tab.path;
