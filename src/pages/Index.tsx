@@ -42,12 +42,6 @@ const Index = () => {
               <PawPrint className="h-5 w-5 text-primary" strokeWidth={2.2} />
               <p className="text-3xl font-bold text-header-fg">{mockUser.totalPoints}</p>
             </div>
-            <button
-              onClick={() => navigate('/help-center')}
-              className="mt-0.5 text-[12px] text-header-fg/35 font-normal"
-            >
-              查看助力任务
-            </button>
           </div>
           <div className="flex items-center gap-4 text-[13px] text-header-fg/75">
             <div className="flex flex-col items-center">
