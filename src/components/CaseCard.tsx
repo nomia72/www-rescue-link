@@ -35,6 +35,7 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
   const needsCount = caseItem.needs.length;
   const imgSrc = caseImages[caseItem.id] || cat1;
   const actions = actionConfigs[caseItem.helpType] || actionConfigs.supply;
+  const publisher = getPublisherForCase(caseItem.id);
 
   const handleAction = (e: React.MouseEvent, action: string) => {
     e.stopPropagation();
