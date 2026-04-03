@@ -16,7 +16,6 @@ const Index = () => {
   const [statusFilter, setStatusFilter] = useState('全部');
   const [auxFilter, setAuxFilter] = useState('全部');
 
-  const urgentCount = mockCases.filter((c) => c.isUrgent).length;
   const totalCases = mockCases.length;
 
   const filteredCases = mockCases.filter((c) => {
