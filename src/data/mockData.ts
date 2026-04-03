@@ -127,7 +127,7 @@ export const mockCases: CaseItem[] = [
     id: '2',
     title: '流浪狗妈妈带4只幼崽需要寄养',
     animalType: '狗',
-    status: '寻找寄养',
+    status: '待安置',
     location: '上海市浦东新区世纪公园附近',
     city: '上海',
     distance: '3.8km',
