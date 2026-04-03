@@ -13,7 +13,7 @@ import Adoption from "./pages/channels/Adoption";
 import LostPet from "./pages/channels/LostPet";
 import Shelter from "./pages/channels/Shelter";
 import CreateCase from "./pages/forms/CreateCase";
-import UploadEvidence from "./pages/forms/UploadEvidence";
+import AddRecord from "./pages/forms/AddRecord";
 import PublishLostPet from "./pages/forms/PublishLostPet";
 import Shop from "./pages/Shop";
 import Guide from "./pages/Guide";
@@ -29,6 +29,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/rescue" element={<Publish />} />
           <Route path="/publish" element={<Publish />} />
           <Route path="/help-center" element={<HelpCenter />} />
           <Route path="/profile" element={<Profile />} />
@@ -39,7 +40,8 @@ const App = () => (
           <Route path="/channel/shelter" element={<Shelter />} />
           <Route path="/lost-pet-map" element={<LostPetMap />} />
           <Route path="/create-case" element={<CreateCase />} />
-          <Route path="/upload-evidence" element={<UploadEvidence />} />
+          <Route path="/add-record" element={<AddRecord />} />
+          <Route path="/upload-evidence" element={<AddRecord />} />
           <Route path="/publish-lost-pet" element={<PublishLostPet />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/guide" element={<Guide />} />

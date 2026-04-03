@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, PlusCircle, Heart, User } from 'lucide-react';
+import { Home, Shield, Heart, User } from 'lucide-react';
 
 const tabs = [
   { path: '/', label: '首页', icon: Home },
-  { path: '/publish', label: '发布', icon: PlusCircle },
-  { path: '/help-center', label: '助力中心', icon: Heart },
+  { path: '/rescue', label: '救助', icon: Shield },
+  { path: '/help-center', label: '助力', icon: Heart },
   { path: '/profile', label: '我的', icon: User },
 ];
 
