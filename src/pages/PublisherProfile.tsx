@@ -133,7 +133,7 @@ const PublisherProfile = () => {
         {/* Published cases */}
         <div className="mt-4">
           <h2 className="mb-2 text-sm font-semibold text-foreground">
-            📋 {isShelter ? '已发布案例' : '发起的案例'}
+            📋 {isShelter ? '已发布个案' : '发起的个案'}
           </h2>
           {publisherCases.length > 0 ? (
             publisherCases.map((c) => <CaseCard key={c.id} caseItem={c} />)
