@@ -1,14 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import MobileLayout from '@/components/MobileLayout';
 import { mockUser, mockCases } from '@/data/mockData';
-import { Search, MapPin, ChevronRight, AlertTriangle, SlidersHorizontal, PawPrint, Heart, Map, Package } from 'lucide-react';
+import { Search, MapPin, SlidersHorizontal, PawPrint, Heart, Map, Package } from 'lucide-react';
 import CaseCard from '@/components/CaseCard';
 import { useState } from 'react';
 
 const channels = [
-  { label: '领养', sub: '为它找一个家', path: '/channel/adoption', icon: Heart, bg: 'bg-emerald-50', iconColor: 'text-emerald-500', titleColor: 'text-emerald-700' },
-  { label: '寻宠地图', sub: '附近走失宠物', path: '/lost-pet-map', icon: Map, bg: 'bg-amber-50', iconColor: 'text-amber-500', titleColor: 'text-amber-700' },
-  { label: '小院补给', sub: '支持流浪小院', path: '/channel/shelter', icon: Package, bg: 'bg-orange-50', iconColor: 'text-orange-400', titleColor: 'text-orange-600' },
+  { label: '领养', sub: '为它找一个家', path: '/channel/adoption', icon: Heart, bg: 'bg-[hsl(30,60%,95%)]', iconColor: 'text-[hsl(24,75%,50%)]', titleColor: 'text-[hsl(24,60%,35%)]' },
+  { label: '寻宠地图', sub: '附近走失宠物', path: '/lost-pet-map', icon: Map, bg: 'bg-[hsl(38,65%,93%)]', iconColor: 'text-[hsl(35,80%,48%)]', titleColor: 'text-[hsl(35,55%,32%)]' },
+  { label: '小院补给', sub: '支持流浪小院', path: '/channel/shelter', icon: Package, bg: 'bg-[hsl(25,55%,94%)]', iconColor: 'text-[hsl(20,70%,52%)]', titleColor: 'text-[hsl(20,50%,33%)]' },
 ];
 
 const Index = () => {
@@ -83,22 +83,7 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Emergency Banner */}
-        {urgentCount > 0 && (
-          <button
-            onClick={() => navigate('/channel/emergency')}
-            className="mt-3 flex w-full items-center gap-3 rounded-2xl bg-urgent/8 px-3.5 py-3 ring-1 ring-urgent/20 transition-colors active:bg-urgent/15"
-          >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-urgent/15">
-              <AlertTriangle className="h-5 w-5 text-urgent" />
-            </div>
-            <div className="flex-1 text-left">
-              <p className="text-[14px] font-semibold text-urgent">紧急求助</p>
-              <p className="text-[12px] text-urgent/70">{urgentCount} 个个案需要快速接力</p>
-            </div>
-            <ChevronRight className="h-4 w-4 text-urgent/50" />
-          </button>
-        )}
+        {/* Emergency banner removed — urgent cases surface via sort priority */}
 
         {/* Channels — lightweight entry cards */}
         <div className="mt-3 grid grid-cols-3 gap-2">
@@ -108,12 +93,12 @@ const Index = () => {
               <button
                 key={ch.label}
                 onClick={() => navigate(ch.path)}
-                className={`flex items-center gap-2 rounded-2xl ${ch.bg} px-3 py-2.5 transition-transform active:scale-[0.97]`}
+                className={`flex items-center gap-2.5 rounded-2xl ${ch.bg} px-3 py-3 shadow-sm ring-1 ring-black/[0.04] transition-transform active:scale-[0.97]`}
               >
-                <Icon className={`h-5 w-5 shrink-0 ${ch.iconColor}`} strokeWidth={2} />
+                <Icon className={`h-6 w-6 shrink-0 ${ch.iconColor}`} strokeWidth={2.2} />
                 <div className="text-left">
-                  <p className={`text-[14px] font-bold leading-tight ${ch.titleColor}`}>{ch.label}</p>
-                  <p className="text-[10px] leading-tight text-muted-foreground">{ch.sub}</p>
+                  <p className={`text-[15px] font-bold leading-tight ${ch.titleColor}`}>{ch.label}</p>
+                  <p className="text-[10px] leading-tight text-muted-foreground/70">{ch.sub}</p>
                 </div>
               </button>
             );

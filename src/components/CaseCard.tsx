@@ -93,18 +93,13 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
             </button>
           </div>
 
-          {/* Row 2: Title */}
+          {/* Row 2: Title + Location inline */}
           <h3 className="mt-1 line-clamp-1 text-[15px] font-bold leading-snug text-foreground">
             {caseItem.title}
           </h3>
-
-          {/* Row 3: Location + Distance */}
-          <div className="mt-1 flex items-center gap-1 text-[12px] text-muted-foreground">
+          <div className="mt-0.5 flex items-center gap-1 text-[12px] text-muted-foreground">
             <MapPin className="h-3 w-3 shrink-0" />
-            <span className="truncate">{simpleLocation}</span>
-            {caseItem.distance && (
-              <span className="shrink-0 font-medium text-accent-foreground">· {caseItem.distance}</span>
-            )}
+            <span className="truncate">{simpleLocation}{caseItem.distance ? ` · ${caseItem.distance}` : ''}</span>
           </div>
 
           {/* Row 4: Points Progress */}
