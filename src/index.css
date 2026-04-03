@@ -63,7 +63,8 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'Hiragino Sans GB', 'Noto Sans SC', 'Microsoft YaHei UI', 'Microsoft YaHei', sans-serif;
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-tap-highlight-color: transparent;
