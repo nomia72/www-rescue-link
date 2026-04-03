@@ -19,7 +19,7 @@ const MobileLayout = ({ children, hideTabBar }: MobileLayoutProps) => {
   const location = useLocation();
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-[640px] flex-col bg-background">
+    <div className="mx-auto flex min-h-screen w-full sm:max-w-[430px] flex-col bg-background">
       <main className={`flex-1 ${hideTabBar ? '' : 'pb-16'}`}>
         {children}
       </main>
