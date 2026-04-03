@@ -1,14 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import MobileLayout from '@/components/MobileLayout';
 import { mockUser, mockCases } from '@/data/mockData';
-import { Search, MapPin, ChevronRight, Heart, PawPrint, Package, AlertTriangle, SlidersHorizontal } from 'lucide-react';
+import { Search, MapPin, ChevronRight, AlertTriangle, SlidersHorizontal, PawPrint } from 'lucide-react';
 import CaseCard from '@/components/CaseCard';
 import { useState } from 'react';
 
 const channels = [
-  { label: '领养', icon: Heart, path: '/channel/adoption', color: 'bg-accent/15 text-accent-foreground' },
-  { label: '寻宠地图', icon: PawPrint, path: '/lost-pet-map', color: 'bg-accent/15 text-accent-foreground' },
-  { label: '小院补给', icon: Package, path: '/channel/shelter', color: 'bg-secondary text-secondary-foreground' },
+  { label: '领养', path: '/channel/adoption' },
+  { label: '寻宠地图', path: '/lost-pet-map' },
+  { label: '小院补给', path: '/channel/shelter' },
 ];
 
 const Index = () => {
@@ -37,8 +37,19 @@ const Index = () => {
       <div className="bg-header-bg px-4 pb-3 pt-8">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[14px] text-header-fg/70 flex items-center gap-1">🐾 我的助力值</p>
-            <p className="text-3xl font-bold text-header-fg">{mockUser.totalPoints}</p>
+            <p className="text-[14px] text-header-fg/70">我的助力值</p>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
+                <PawPrint className="h-5 w-5 text-primary" strokeWidth={2.2} />
+                <p className="text-3xl font-bold text-header-fg">{mockUser.totalPoints}</p>
+              </div>
+              <button
+                onClick={() => navigate('/help-center')}
+                className="ml-1 rounded-full bg-primary px-3 py-1 text-[12px] font-medium text-primary-foreground"
+              >
+                去助力 →
+              </button>
+            </div>
           </div>
           <div className="flex items-center gap-4 text-[13px] text-header-fg/75">
             <div className="flex flex-col items-center">
@@ -57,13 +68,6 @@ const Index = () => {
             </div>
           </div>
         </div>
-        <button
-          onClick={() => navigate('/help-center')}
-          className="mt-2 flex w-full items-center gap-2 rounded-xl bg-header-accent/60 px-3.5 py-2"
-        >
-          <span className="text-[13px] text-header-fg/80">🌟 今日可参与 3 项助力</span>
-          <ChevronRight className="ml-auto h-4 w-4 text-header-fg/50" />
-        </button>
       </div>
 
       <div className="px-4">
@@ -75,7 +79,7 @@ const Index = () => {
           </button>
           <div className="flex flex-1 items-center gap-2 rounded-xl bg-card px-3.5 py-2.5 shadow-sm">
             <Search className="h-4 w-4 text-muted-foreground" />
-            <span className="text-[12px] text-muted-foreground">搜索个案编号、地点、用户名、关键词...</span>
+            <span className="text-[12px] text-muted-foreground">搜索救助个案编号、地点、用户名、关键词...</span>
           </div>
         </div>
 
@@ -96,18 +100,15 @@ const Index = () => {
           </button>
         )}
 
-        {/* Channels - no subtitles */}
+        {/* Channels - orange bg, white text, no icons */}
         <div className="mt-3 grid grid-cols-3 gap-2">
           {channels.map((ch) => (
             <button
               key={ch.label}
               onClick={() => navigate(ch.path)}
-              className="flex items-center justify-center gap-2 rounded-2xl bg-card px-3 py-3 shadow-sm transition-transform active:scale-[0.97]"
+              className="flex items-center justify-center rounded-2xl bg-primary px-3 py-3 shadow-sm transition-transform active:scale-[0.97]"
             >
-              <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${ch.color}`}>
-                <ch.icon className="h-4.5 w-4.5" strokeWidth={1.8} />
-              </div>
-              <p className="text-[14px] font-semibold text-foreground">{ch.label}</p>
+              <p className="text-[14px] font-semibold text-primary-foreground">{ch.label}</p>
             </button>
           ))}
         </div>
