@@ -1,29 +1,35 @@
 import { useNavigate } from 'react-router-dom';
 import MobileLayout from '@/components/MobileLayout';
 import { mockUser, mockCases } from '@/data/mockData';
-import { Search, MapPin, ChevronRight, Heart, PawPrint, Package, AlertTriangle } from 'lucide-react';
+import { Search, MapPin, ChevronRight, Heart, PawPrint, Package, AlertTriangle, SlidersHorizontal } from 'lucide-react';
 import CaseCard from '@/components/CaseCard';
 import { useState } from 'react';
 
 const channels = [
-  { label: '领养', sub: '待领养动物', icon: Heart, path: '/channel/adoption', color: 'bg-accent/15 text-accent-foreground' },
-  { label: '寻宠地图', sub: '线索 / 帮扩散', icon: PawPrint, path: '/lost-pet-map', color: 'bg-accent/15 text-accent-foreground' },
-  { label: '小院补给', sub: '认领长期需求', icon: Package, path: '/channel/shelter', color: 'bg-secondary text-secondary-foreground' },
+  { label: '领养', icon: Heart, path: '/channel/adoption', color: 'bg-accent/15 text-accent-foreground' },
+  { label: '寻宠地图', icon: PawPrint, path: '/lost-pet-map', color: 'bg-accent/15 text-accent-foreground' },
+  { label: '小院补给', icon: Package, path: '/channel/shelter', color: 'bg-secondary text-secondary-foreground' },
 ];
 
 const Index = () => {
   const navigate = useNavigate();
   const [animalFilter, setAnimalFilter] = useState('全部');
-  const [rangeFilter, setRangeFilter] = useState('全城');
+  const [showFilterPanel, setShowFilterPanel] = useState(false);
+  const [helpTypeFilter, setHelpTypeFilter] = useState('全部');
 
   const filteredCases = mockCases.filter((c) => {
-    if (animalFilter === '猫') return c.animalType === '猫';
-    if (animalFilter === '狗') return c.animalType === '狗';
-    return true;
+    const animalMatch = animalFilter === '全部' || c.animalType === animalFilter;
+    const helpMatch = helpTypeFilter === '全部' ||
+      (helpTypeFilter === '紧急' && c.helpType === 'emergency') ||
+      (helpTypeFilter === '物资' && c.helpType === 'supply') ||
+      (helpTypeFilter === '寄养' && c.helpType === 'foster') ||
+      (helpTypeFilter === '领养' && c.helpType === 'adopt') ||
+      (helpTypeFilter === '寻宠' && c.helpType === 'lost');
+    return animalMatch && helpMatch;
   });
 
   const allCases = [...filteredCases].sort((a, b) => (b.isUrgent ? 1 : 0) - (a.isUrgent ? 1 : 0));
-  const urgentCount = filteredCases.filter((c) => c.isUrgent).length;
+  const urgentCount = mockCases.filter((c) => c.isUrgent).length;
 
   return (
     <MobileLayout>
@@ -31,7 +37,7 @@ const Index = () => {
       <div className="bg-header-bg px-4 pb-3 pt-8">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[13px] text-header-fg/70">我的公益积分</p>
+            <p className="text-[14px] text-header-fg/70 flex items-center gap-1">🐾 我的助力值</p>
             <p className="text-3xl font-bold text-header-fg">{mockUser.totalPoints}</p>
           </div>
           <div className="flex items-center gap-4 text-[13px] text-header-fg/75">
@@ -63,13 +69,13 @@ const Index = () => {
       <div className="px-4">
         {/* Search & Location */}
         <div className="mt-3 flex items-center gap-2">
-          <button className="flex shrink-0 items-center gap-1 rounded-xl bg-card px-3 py-2 text-[13px] text-muted-foreground shadow-sm">
+          <button className="flex shrink-0 items-center gap-1 rounded-xl bg-card px-3 py-2.5 text-[13px] text-muted-foreground shadow-sm">
             <MapPin className="h-4 w-4" />
             北京
           </button>
-          <div className="flex flex-1 items-center gap-2 rounded-xl bg-card px-3.5 py-2 shadow-sm">
+          <div className="flex flex-1 items-center gap-2 rounded-xl bg-card px-3.5 py-2.5 shadow-sm">
             <Search className="h-4 w-4 text-muted-foreground" />
-            <span className="text-[13px] text-muted-foreground">搜索救助个案、地点…</span>
+            <span className="text-[12px] text-muted-foreground">搜索个案编号、地点、用户名、关键词...</span>
           </div>
         </div>
 
@@ -90,33 +96,30 @@ const Index = () => {
           </button>
         )}
 
-        {/* Channels */}
+        {/* Channels - no subtitles */}
         <div className="mt-3 grid grid-cols-3 gap-2">
           {channels.map((ch) => (
             <button
               key={ch.label}
               onClick={() => navigate(ch.path)}
-              className="flex items-center gap-2 rounded-2xl bg-card px-3 py-2.5 shadow-sm transition-transform active:scale-[0.97]"
+              className="flex items-center justify-center gap-2 rounded-2xl bg-card px-3 py-3 shadow-sm transition-transform active:scale-[0.97]"
             >
               <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${ch.color}`}>
                 <ch.icon className="h-4.5 w-4.5" strokeWidth={1.8} />
               </div>
-              <div className="min-w-0 text-left">
-                <p className="text-[13px] font-semibold leading-tight text-foreground">{ch.label}</p>
-                <p className="truncate text-[11px] leading-tight text-muted-foreground">{ch.sub}</p>
-              </div>
+              <p className="text-[14px] font-semibold text-foreground">{ch.label}</p>
             </button>
           ))}
         </div>
 
         {/* Filters */}
         <div className="mt-3 flex items-center gap-2">
-          <div className="flex gap-0.5 rounded-xl bg-muted p-0.5">
-            {['全部', '猫', '狗'].map((f) => (
+          <div className="flex flex-1 gap-0.5 rounded-xl bg-muted p-0.5">
+            {['全部', '猫', '狗', '其他'].map((f) => (
               <button
                 key={f}
                 onClick={() => setAnimalFilter(f)}
-                className={`rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors ${
+                className={`flex-1 rounded-lg px-2 py-1.5 text-[13px] font-medium transition-colors ${
                   animalFilter === f ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground'
                 }`}
               >
@@ -124,24 +127,42 @@ const Index = () => {
               </button>
             ))}
           </div>
-          <div className="flex gap-0.5 rounded-xl bg-muted p-0.5">
-            {['全城', '附近'].map((f) => (
-              <button
-                key={f}
-                onClick={() => setRangeFilter(f)}
-                className={`rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors ${
-                  rangeFilter === f ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground'
-                }`}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
+          <button
+            onClick={() => setShowFilterPanel(!showFilterPanel)}
+            className={`flex items-center gap-1 rounded-xl px-3 py-1.5 text-[13px] font-medium transition-colors ${
+              showFilterPanel || helpTypeFilter !== '全部'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-muted text-muted-foreground'
+            }`}
+          >
+            <SlidersHorizontal className="h-4 w-4" />
+            筛选
+          </button>
         </div>
+
+        {/* Filter Panel */}
+        {showFilterPanel && (
+          <div className="mt-2 rounded-xl bg-card p-3 shadow-sm">
+            <p className="mb-2 text-[12px] font-medium text-muted-foreground">救助需求</p>
+            <div className="flex flex-wrap gap-1.5">
+              {['全部', '紧急', '物资', '寄养', '领养', '寻宠'].map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setHelpTypeFilter(f)}
+                  className={`rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors ${
+                    helpTypeFilter === f ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                  }`}
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Cases Stream */}
         <div className="mt-3 pb-4">
-          <h2 className="mb-2 text-[14px] font-semibold text-foreground">🐾 推荐救助个案</h2>
+          <h2 className="mb-2 text-[15px] font-semibold text-foreground">🐾 推荐救助个案</h2>
           {allCases.map((c) => (
             <CaseCard key={c.id} caseItem={c} />
           ))}

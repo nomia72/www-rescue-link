@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { CaseItem } from '@/data/mockData';
 import { getPublisherForCase } from '@/data/publishers';
 import { MapPin, Star } from 'lucide-react';
-import { toast } from 'sonner';
 import { useState } from 'react';
 import cat1 from '@/assets/cat1.jpg';
 import dog1 from '@/assets/dog1.jpg';
@@ -26,37 +25,30 @@ const caseNumbers: Record<string, number> = {
   '5': 245,
 };
 
-const actionConfigs: Record<string, { primary: { label: string; icon: string }; secondary: { label: string; icon: string } }> = {
-  emergency: { primary: { label: '立即联系', icon: '📞' }, secondary: { label: '生成转发内容', icon: '📋' } },
-  supply: { primary: { label: '赠送积分', icon: '💝' }, secondary: { label: '生成转发内容', icon: '📋' } },
-  foster: { primary: { label: '提供寄养', icon: '🏠' }, secondary: { label: '生成转发内容', icon: '📋' } },
-  adopt: { primary: { label: '查看领养', icon: '💛' }, secondary: { label: '生成转发内容', icon: '📋' } },
-  lost: { primary: { label: '提供线索', icon: '📍' }, secondary: { label: '生成转发内容', icon: '📋' } },
-};
-
 const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
   const navigate = useNavigate();
   const [followed, setFollowed] = useState(false);
   const remaining = caseItem.totalPoints - caseItem.earnedPoints;
   const progress = (caseItem.earnedPoints / caseItem.totalPoints) * 100;
   const imgSrc = caseImages[caseItem.id] || cat1;
-  const actions = actionConfigs[caseItem.helpType] || actionConfigs.supply;
   const publisher = getPublisherForCase(caseItem.id);
   const caseNo = caseNumbers[caseItem.id] || parseInt(caseItem.id);
+  const formattedNo = String(caseNo).padStart(5, '0');
 
-  const handleAction = (e: React.MouseEvent, action: string) => {
-    e.stopPropagation();
-    if (action === '生成转发内容') {
-      toast.success('转发内容已生成，可复制分享到社交平台');
-    } else {
-      toast.success(`${action}功能即将上线`);
-    }
-  };
+  // Simplify location: remove "附近", "SOHO" etc - just use district
+  const simpleLocation = caseItem.location
+    .replace(/望京SOHO附近/, '朝阳区')
+    .replace(/世纪公园附近/, '浦东新区')
+    .replace(/棠下村/, '天河区')
+    .replace(/北京市/, '')
+    .replace(/上海市/, '')
+    .replace(/广州市/, '')
+    .replace(/成都市/, '')
+    .replace(/深圳市/, '');
 
   const handleFollow = (e: React.MouseEvent) => {
     e.stopPropagation();
     setFollowed(!followed);
-    toast.success(followed ? '已取消关注' : '已关注，将收到进展更新');
   };
 
   return (
@@ -72,7 +64,7 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
             alt={caseItem.title}
             loading="lazy"
             className="h-full w-full object-cover"
-            style={{ minHeight: '160px' }}
+            style={{ minHeight: '140px' }}
           />
           {caseItem.isUrgent && (
             <span className="absolute left-1.5 top-1.5 rounded-md bg-urgent px-2 py-0.5 text-[11px] font-bold text-urgent-foreground">
@@ -86,7 +78,7 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
           {/* Row 1: Case # + Tags + Follow Star */}
           <div className="flex items-center justify-between">
             <div className="flex flex-wrap items-center gap-1.5">
-              <span className="text-[12px] font-medium text-muted-foreground">#{caseNo}</span>
+              <span className="text-[12px] font-medium text-muted-foreground">#{formattedNo}</span>
               <span className="rounded-md bg-accent/15 px-1.5 py-0.5 text-[11px] font-medium text-accent-foreground">
                 {caseItem.status}
               </span>
@@ -109,7 +101,7 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
           {/* Row 3: Location + Distance */}
           <div className="mt-1 flex items-center gap-1 text-[12px] text-muted-foreground">
             <MapPin className="h-3 w-3 shrink-0" />
-            <span className="truncate">{caseItem.location}</span>
+            <span className="truncate">{simpleLocation}</span>
             {caseItem.distance && (
               <span className="shrink-0 font-medium text-accent-foreground">· {caseItem.distance}</span>
             )}
@@ -156,27 +148,6 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
           </div>
         </div>
       </button>
-
-      {/* Row 6: Quick action buttons */}
-      <div className="flex border-t border-border/50">
-        <button
-          onClick={(e) => handleAction(e, actions.primary.label)}
-          className={`flex flex-1 items-center justify-center gap-1.5 py-2 text-[13px] font-medium transition-colors active:bg-muted ${
-            caseItem.isUrgent ? 'text-urgent' : 'text-accent-foreground'
-          }`}
-        >
-          <span>{actions.primary.icon}</span>
-          {actions.primary.label}
-        </button>
-        <div className="w-px bg-border/50" />
-        <button
-          onClick={(e) => handleAction(e, actions.secondary.label)}
-          className="flex flex-1 items-center justify-center gap-1.5 py-2 text-[13px] font-medium text-muted-foreground transition-colors active:bg-muted"
-        >
-          <span>{actions.secondary.icon}</span>
-          {actions.secondary.label}
-        </button>
-      </div>
     </div>
   );
 };
