@@ -139,11 +139,11 @@ const CaseDetail = () => {
             <span className="text-xs font-medium text-accent-foreground">认领需求</span>
           </button>
           <button
-            onClick={() => toast.success('链接已复制，快去分享吧！')}
+            onClick={() => toast.success('转发内容已生成，可复制分享到社交平台')}
             className="flex flex-col items-center gap-1 rounded-xl bg-muted p-3 transition-colors active:bg-muted/80"
           >
-            <span className="text-xl">📤</span>
-            <span className="text-xs font-medium text-muted-foreground">帮忙转发</span>
+            <span className="text-xl">📋</span>
+            <span className="text-xs font-medium text-muted-foreground">生成转发内容</span>
           </button>
         </div>
         <p className="mt-2 text-center text-[10px] text-muted-foreground">

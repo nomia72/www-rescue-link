@@ -38,7 +38,7 @@ const MobileLayout = ({ children, hideTabBar }: MobileLayoutProps) => {
                   }`}
                 >
                   <Icon className="h-5 w-5" strokeWidth={isActive ? 2.5 : 1.8} />
-                  <span className="text-[10px] font-medium">{tab.label}</span>
+                  <span className="text-[11px] font-medium">{tab.label}</span>
                 </button>
               );
             })}
