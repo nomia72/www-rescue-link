@@ -85,12 +85,12 @@ const Index = () => {
               <button
                 key={ch.label}
                 onClick={() => navigate(ch.path)}
-                className={`flex items-center gap-2.5 rounded-2xl ${ch.bg} px-3 py-3 shadow-sm ring-1 ring-black/[0.04] transition-transform active:scale-[0.97]`}
+                className={`flex flex-col items-center gap-1.5 rounded-2xl ${ch.bg} px-2 py-3 shadow-sm ring-1 ring-black/[0.04] transition-transform active:scale-[0.97]`}
               >
                 <Icon className={`h-6 w-6 shrink-0 ${ch.iconColor}`} strokeWidth={2.2} />
-                <div className="text-left">
-                  <p className={`text-[15px] font-bold leading-tight ${ch.titleColor}`}>{ch.label}</p>
-                  <p className="text-[10px] leading-tight text-muted-foreground/70">{ch.sub}</p>
+                <div className="text-center">
+                  <p className={`text-[14px] font-bold leading-tight ${ch.titleColor}`}>{ch.label}</p>
+                  <p className="mt-0.5 text-[10px] leading-tight text-muted-foreground/70">{ch.sub}</p>
                 </div>
               </button>
             );
