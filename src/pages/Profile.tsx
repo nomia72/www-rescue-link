@@ -36,7 +36,7 @@ const Profile = () => {
           <div className="h-8 w-px bg-header-fg/15" />
           <div className="text-center">
             <p className="text-xl font-bold text-header-fg">{mockUser.casesPublished}</p>
-            <p className="text-[10px] text-header-fg/60">发布案例</p>
+            <p className="text-[10px] text-header-fg/60">发布个案</p>
           </div>
           <div className="h-8 w-px bg-header-fg/15" />
           <div className="text-center">
