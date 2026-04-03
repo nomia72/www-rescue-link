@@ -93,16 +93,12 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
             </button>
           </div>
 
-          {/* Row 2: Title + Location inline */}
+          {/* Row 2: Title */}
           <h3 className="mt-1 line-clamp-1 text-[15px] font-bold leading-snug text-foreground">
             {caseItem.title}
           </h3>
-          <div className="mt-0.5 flex items-center gap-1 text-[12px] text-muted-foreground">
-            <MapPin className="h-3 w-3 shrink-0" />
-            <span className="truncate">{simpleLocation}{caseItem.distance ? ` · ${caseItem.distance}` : ''}</span>
-          </div>
 
-          {/* Row 4: Points Progress */}
+          {/* Row 3: Points Progress */}
           <div className="mt-1.5">
             <div className="flex items-center justify-between text-[12px]">
               <span className="text-muted-foreground">
@@ -118,28 +114,33 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
             </div>
           </div>
 
-          {/* Row 5: Publisher + Updated time */}
+          {/* Row 4: Publisher + Location + Time */}
           <div className="mt-1.5 flex items-center justify-between">
-            {publisher ? (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`/publisher/${publisher.id}`);
-                }}
-                className="flex items-center gap-1.5"
-              >
-                <div className="flex h-5 w-5 items-center justify-center rounded-full bg-accent/20 text-[10px]">
-                  {publisher.type === 'shelter' ? '🏠' : '👤'}
-                </div>
-                <span className="text-[12px] text-muted-foreground">{publisher.name}</span>
-                {publisher.certifiedShelter && (
-                  <span className="rounded bg-accent/15 px-1 py-px text-[10px] font-medium text-accent-foreground">认证小院</span>
-                )}
-              </button>
-            ) : (
-              <span className="text-[11px] text-muted-foreground">{caseItem.updatedAt}</span>
-            )}
-            <span className="text-[11px] text-muted-foreground">{caseItem.updatedAt}</span>
+            <div className="flex items-center gap-1.5 min-w-0">
+              {publisher ? (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/publisher/${publisher.id}`);
+                  }}
+                  className="flex items-center gap-1 shrink-0"
+                >
+                  <div className="flex h-4 w-4 items-center justify-center rounded-full bg-accent/20 text-[9px]">
+                    {publisher.type === 'shelter' ? '🏠' : '👤'}
+                  </div>
+                  <span className="text-[11px] text-muted-foreground">{publisher.name}</span>
+                  {publisher.certifiedShelter && (
+                    <span className="rounded bg-accent/15 px-1 py-px text-[10px] font-medium text-accent-foreground">认证</span>
+                  )}
+                </button>
+              ) : null}
+              <span className="text-[11px] text-muted-foreground/60">·</span>
+              <div className="flex items-center gap-0.5 text-[11px] text-muted-foreground truncate">
+                <MapPin className="h-3 w-3 shrink-0" />
+                <span className="truncate">{simpleLocation}{caseItem.distance ? ` · ${caseItem.distance}` : ''}</span>
+              </div>
+            </div>
+            <span className="text-[11px] text-muted-foreground shrink-0 ml-2">{caseItem.updatedAt}</span>
           </div>
         </div>
       </button>
