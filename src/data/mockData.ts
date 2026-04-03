@@ -159,7 +159,7 @@ export const mockCases: CaseItem[] = [
     id: '3',
     title: '社区猫绝育计划 · 第12期',
     animalType: '猫',
-    status: '救助中',
+    status: '治疗中',
     location: '广州市天河区棠下村',
     city: '广州',
     distance: '5.4km',
