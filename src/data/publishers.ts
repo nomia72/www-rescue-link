@@ -59,7 +59,7 @@ export const mockPublishers: Publisher[] = [
     helpsReceived: 160,
     followers: 380,
     certifiedShelter: true,
-    longTermNeeds: ['绝育名额', '术后护理用品', '运输笼具', '志愿者司机'],
+    longTermNeeds: ['绝育名额', '术后护理用品', '运输笼具'],
   },
   {
     id: 'p4',
