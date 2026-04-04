@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import MobileLayout from '@/components/MobileLayout';
+import { getCaseById } from '@/lib/caseStore';
 import { mockCases } from '@/data/mockData';
 import { getPublisherForCase } from '@/data/publishers';
 import PublisherBadge from '@/components/PublisherBadge';
