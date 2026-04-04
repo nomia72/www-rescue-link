@@ -33,9 +33,10 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
   const [showPawClap, setShowPawClap] = useState(false);
   const [localHeat, setLocalHeat] = useState(caseItem.heatValue);
   const [todayBoosts, setTodayBoosts] = useState(0);
-  const imgSrc = caseImages[caseItem.id] || cat1;
+  const imgSrc = caseItem.image || caseImages[caseItem.id] || cat1;
   const publisher = getPublisherForCase(caseItem.id);
-  const caseNo = caseNumbers[caseItem.id] || parseInt(caseItem.id);
+  const extra = (caseItem as any)._extra;
+  const caseNo = extra?.caseNo || caseNumbers[caseItem.id] || parseInt(caseItem.id) || 0;
   const formattedNo = String(caseNo).padStart(5, '0');
 
   // Need tags (unfulfilled help needs only)
