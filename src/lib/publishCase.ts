@@ -3,7 +3,7 @@
  * Orchestrates: image upload → payload build → on-chain proof → store
  */
 
-import { v4 as uuidv4 } from 'crypto';
+
 import {
   generateCaseId,
   generateMetaHash,
