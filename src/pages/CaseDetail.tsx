@@ -61,9 +61,11 @@ const CaseDetail = () => {
 
   const heatDisplay = localHeat || caseItem.heatValue;
   const publisher = getPublisherForCase(caseItem.id);
-  const imgSrc = caseImages[caseItem.id || '1'] || cat1;
-  const caseNo = caseNumbers[caseItem.id] || parseInt(caseItem.id);
+  const imgSrc = caseItem.image || caseImages[caseItem.id || '1'] || cat1;
+  const extra = (caseItem as any)._extra;
+  const caseNo = extra?.caseNo || caseNumbers[caseItem.id] || parseInt(caseItem.id) || 0;
   const formattedNo = String(caseNo).padStart(5, '0');
+  const txHash = extra?.txHash || caseItem.evidences?.[0]?.chainHash || '';
 
   const helpNeeds = caseItem.needs.filter((n) => n.category === 'help');
 
