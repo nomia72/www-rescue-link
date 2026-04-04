@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { CaseItem } from '@/data/mockData';
 import { getPublisherForCase } from '@/data/publishers';
-import { MapPin, Star, Flame } from 'lucide-react';
+import { Star, Flame, PawPrint } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import cat1 from '@/assets/cat1.jpg';
@@ -18,10 +18,10 @@ const PawClapAnimation = ({ onDone }: { onDone: () => void }) => {
     <div className="fixed inset-0 z-[999] flex items-center justify-center pointer-events-none" onAnimationEnd={onDone}>
       <div className="animate-paw-clap flex flex-col items-center">
         <div className="flex items-center gap-1">
-          <span className="text-3xl animate-paw-left">🐾</span>
-          <span className="text-3xl animate-paw-right">🐾</span>
+          <span className="text-4xl animate-paw-left">🐾</span>
+          <span className="text-4xl animate-paw-right">🐾</span>
         </div>
-        <span className="mt-1 text-[14px] font-bold text-primary animate-fade-in">热力 +1</span>
+        <span className="mt-1 text-[15px] font-bold text-primary animate-fade-in">热力 +1</span>
       </div>
     </div>
   );
@@ -38,13 +38,7 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
   const caseNo = caseNumbers[caseItem.id] || parseInt(caseItem.id);
   const formattedNo = String(caseNo).padStart(5, '0');
 
-  const simpleLocation = caseItem.location
-    .replace(/望京SOHO附近/, '朝阳区')
-    .replace(/世纪公园附近/, '浦东新区')
-    .replace(/棠下村/, '天河区')
-    .replace(/北京市/, '').replace(/上海市/, '').replace(/广州市/, '').replace(/成都市/, '').replace(/深圳市/, '');
-
-  // Need tags (unfulfilled help needs only, not spread)
+  // Need tags (unfulfilled help needs only)
   const needTags = caseItem.needs
     .filter((n) => !n.fulfilled && n.category === 'help')
     .map((n) => n.name)
@@ -132,19 +126,25 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
               <span>{caseItem.updatedAt}</span>
             </div>
 
-            {/* Row 6: Publisher + location + boost */}
+            {/* Row 6: Publisher + distance + boost */}
             <div className="mt-1.5 flex items-center justify-between">
               <div className="flex items-center gap-1 text-[11px] text-muted-foreground min-w-0 truncate">
                 {publisher && <span>{publisher.name}</span>}
                 <span>·</span>
-                <MapPin className="h-3 w-3 shrink-0" />
-                <span className="truncate">{simpleLocation}{caseItem.distance ? ` · ${caseItem.distance}` : ''}</span>
+                <span>{caseItem.city}</span>
+                {caseItem.distance && (
+                  <>
+                    <span>·</span>
+                    <span>{caseItem.distance}</span>
+                  </>
+                )}
               </div>
               <button
                 onClick={handleBoost}
-                className="shrink-0 flex items-center gap-0.5 rounded-full bg-[hsl(24,60%,94%)] px-2 py-0.5 text-[10px] font-medium text-[hsl(24,65%,42%)] transition-transform active:scale-95"
+                className="shrink-0 flex items-center gap-1 rounded-full bg-[hsl(24,55%,92%)] px-2.5 py-1 text-[11px] font-semibold text-[hsl(24,65%,38%)] transition-transform active:scale-95"
               >
-                🐾 顶一顶
+                <PawPrint className="h-4 w-4" strokeWidth={2.5} />
+                顶一顶
               </button>
             </div>
           </div>

@@ -3,7 +3,7 @@ import MobileLayout from '@/components/MobileLayout';
 import { mockCases } from '@/data/mockData';
 import { getPublisherForCase } from '@/data/publishers';
 import PublisherBadge from '@/components/PublisherBadge';
-import { ArrowLeft, Share2, MapPin, Shield, CheckCircle2, Clock, Link2, AlertTriangle, Flame, ChevronRight, Star, Copy, Image, MessageSquare, Phone } from 'lucide-react';
+import { ArrowLeft, Share2, Shield, CheckCircle2, Clock, Link2, AlertTriangle, Flame, ChevronRight, Star, Copy, Image, MessageSquare, Phone, PawPrint, ChevronDown } from 'lucide-react';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import cat1 from '@/assets/cat1.jpg';
@@ -20,10 +20,10 @@ const PawClapAnimation = ({ onDone }: { onDone: () => void }) => {
     <div className="fixed inset-0 z-[999] flex items-center justify-center pointer-events-none">
       <div className="animate-paw-clap flex flex-col items-center" onAnimationEnd={onDone}>
         <div className="flex items-center gap-1">
-          <span className="text-4xl animate-paw-left">🐾</span>
-          <span className="text-4xl animate-paw-right">🐾</span>
+          <span className="text-5xl animate-paw-left">🐾</span>
+          <span className="text-5xl animate-paw-right">🐾</span>
         </div>
-        <span className="mt-2 text-[16px] font-bold text-primary animate-fade-in">热力 +1</span>
+        <span className="mt-2 text-[17px] font-bold text-primary animate-fade-in">热力 +1</span>
       </div>
     </div>
   );
@@ -38,6 +38,8 @@ const CaseDetail = () => {
   const [localHeat, setLocalHeat] = useState(0);
   const [todayBoosts, setTodayBoosts] = useState(0);
   const [contactRevealed, setContactRevealed] = useState(false);
+  const [descExpanded, setDescExpanded] = useState(false);
+  const [needsExpanded, setNeedsExpanded] = useState(false);
 
   if (!caseItem) {
     return (
@@ -47,12 +49,7 @@ const CaseDetail = () => {
     );
   }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  if (localHeat === 0 && caseItem.heatValue > 0) {
-    // Can't use useEffect easily here due to early return, so just init
-  }
   const heatDisplay = localHeat || caseItem.heatValue;
-
   const publisher = getPublisherForCase(caseItem.id);
   const imgSrc = caseImages[caseItem.id || '1'] || cat1;
   const caseNo = caseNumbers[caseItem.id] || parseInt(caseItem.id);
@@ -97,6 +94,11 @@ const CaseDetail = () => {
     navigator.clipboard.writeText(text).then(() => toast.success('已复制扩散文案'));
   };
 
+  const descriptionShort = caseItem.description.length > 80 ? caseItem.description.slice(0, 80) + '…' : caseItem.description;
+  const needsLong = helpNeeds.length > 3;
+  const visibleNeeds = helpNeeds.slice(0, 3);
+  const hiddenNeeds = helpNeeds.slice(3);
+
   return (
     <MobileLayout hideTabBar>
       {showPawClap && <PawClapAnimation onDone={() => setShowPawClap(false)} />}
@@ -130,7 +132,7 @@ const CaseDetail = () => {
         </div>
       </div>
 
-      <div className="pb-24">
+      <div className="pb-28">
         <div className="px-4">
           {/* B. Case header */}
           <div className="mt-3 flex flex-wrap items-center gap-1.5">
@@ -149,62 +151,105 @@ const CaseDetail = () => {
           <div className="mt-1.5 flex items-center gap-1 text-[13px] text-muted-foreground">
             {publisher && <span>{publisher.name}发起</span>}
             <span>·</span>
-            <MapPin className="h-3.5 w-3.5 shrink-0" />
             <span>{caseItem.city}</span>
+            {caseItem.distance && (
+              <>
+                <span>·</span>
+                <span>{caseItem.distance}</span>
+              </>
+            )}
             <span>· {caseItem.updatedAt}</span>
           </div>
 
-          {/* Heat value explanation */}
-          <div className="mt-2 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+          {/* Heat as inline signal */}
+          <div className="mt-1.5 flex items-center gap-1 text-[11px] text-muted-foreground">
             <Flame className="h-3 w-3 text-[hsl(24,80%,55%)]" />
-            <span>热力值 {heatDisplay}，越高说明越多人在关注这个个案</span>
+            <span>已有 {heatDisplay} 人次为它顶过</span>
           </div>
 
-          {/* A. 当前情况 */}
+          {/* A. 当前情况 - compact with expand */}
           <div className="mt-4 rounded-xl bg-card p-4 shadow-sm">
             <h2 className="text-[15px] font-semibold text-foreground">当前情况</h2>
-            <p className="mt-2 text-[13px] leading-relaxed text-foreground">{caseItem.description}</p>
+            <p className="mt-2 text-[13px] leading-relaxed text-foreground">
+              {descExpanded ? caseItem.description : descriptionShort}
+            </p>
+            {caseItem.description.length > 80 && (
+              <button
+                onClick={() => setDescExpanded(!descExpanded)}
+                className="mt-1 flex items-center gap-0.5 text-[12px] font-medium text-primary"
+              >
+                {descExpanded ? '收起' : '展开查看更多'}
+                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${descExpanded ? 'rotate-180' : ''}`} />
+              </button>
+            )}
           </div>
 
-          {/* B. 发起人已处理 */}
+          {/* B. 发起人已处理 - lightweight checklist, no card shadow */}
           {caseItem.initiatorDone.length > 0 && (
-            <div className="mt-3 rounded-xl bg-card p-4 shadow-sm">
-              <h2 className="text-[15px] font-semibold text-foreground">发起人已处理</h2>
-              <div className="mt-2 space-y-2">
+            <div className="mt-2 rounded-xl bg-muted/40 px-4 py-3">
+              <h2 className="text-[13px] font-semibold text-muted-foreground">发起人已处理</h2>
+              <div className="mt-1.5 space-y-1">
                 {caseItem.initiatorDone.map((item, i) => (
-                  <div key={i} className="flex items-start gap-2">
-                    <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-primary mt-0.5" />
-                    <span className="text-[13px] text-foreground">{item}</span>
+                  <div key={i} className="flex items-center gap-1.5">
+                    <CheckCircle2 className="h-3 w-3 shrink-0 text-primary/70" />
+                    <span className="text-[12px] text-foreground/80">{item}</span>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* C. 当前还需要什么帮助 */}
+          {/* C. 当前还需要 - emphasized card */}
           {helpNeeds.length > 0 && (
-            <div className="mt-3 rounded-xl bg-card p-4 shadow-sm">
+            <div className="mt-3 rounded-xl bg-card p-4 shadow-sm ring-1 ring-urgent/10">
               <h2 className="text-[15px] font-semibold text-foreground">当前还需要</h2>
-              <p className="mt-0.5 text-[11px] text-muted-foreground">以下是发起人目前还需要的帮助</p>
               <div className="mt-3 space-y-2.5">
-                {helpNeeds.map((n) => (
+                {visibleNeeds.map((n) => (
                   <div key={n.id}>
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-2">
                       {n.fulfilled ? (
-                        <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-primary" />
+                        <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" />
                       ) : (
-                        <div className="h-3.5 w-3.5 shrink-0 rounded-full border-2 border-muted-foreground/30" />
+                        <div className="h-4 w-4 shrink-0 rounded-full border-2 border-urgent/40" />
                       )}
-                      <span className={`text-[13px] font-medium ${n.fulfilled ? 'text-primary/70 line-through' : 'text-foreground'}`}>
+                      <span className={`text-[13px] font-medium flex-1 ${n.fulfilled ? 'text-primary/60 line-through' : 'text-foreground'}`}>
                         {n.name}
                       </span>
-                      <span className={`ml-auto shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium ${
-                        n.fulfilled ? 'bg-primary/10 text-primary' : 'bg-urgent/8 text-urgent'
+                      <span className={`shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium ${
+                        n.fulfilled ? 'bg-primary/10 text-primary' : 'bg-urgent/10 text-urgent'
                       }`}>
                         {n.fulfilled ? '已有人帮忙' : '需要帮助'}
                       </span>
                     </div>
-                    {n.desc && <p className="ml-5 mt-0.5 text-[11px] text-muted-foreground">{n.desc}</p>}
+                    {n.desc && <p className="ml-6 mt-0.5 text-[11px] text-muted-foreground">{n.desc}</p>}
+                  </div>
+                ))}
+                {needsLong && !needsExpanded && (
+                  <button
+                    onClick={() => setNeedsExpanded(true)}
+                    className="flex items-center gap-0.5 text-[12px] font-medium text-primary ml-6"
+                  >
+                    查看更多需求 <ChevronDown className="h-3.5 w-3.5" />
+                  </button>
+                )}
+                {needsExpanded && hiddenNeeds.map((n) => (
+                  <div key={n.id}>
+                    <div className="flex items-center gap-2">
+                      {n.fulfilled ? (
+                        <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" />
+                      ) : (
+                        <div className="h-4 w-4 shrink-0 rounded-full border-2 border-urgent/40" />
+                      )}
+                      <span className={`text-[13px] font-medium flex-1 ${n.fulfilled ? 'text-primary/60 line-through' : 'text-foreground'}`}>
+                        {n.name}
+                      </span>
+                      <span className={`shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium ${
+                        n.fulfilled ? 'bg-primary/10 text-primary' : 'bg-urgent/10 text-urgent'
+                      }`}>
+                        {n.fulfilled ? '已有人帮忙' : '需要帮助'}
+                      </span>
+                    </div>
+                    {n.desc && <p className="ml-6 mt-0.5 text-[11px] text-muted-foreground">{n.desc}</p>}
                   </div>
                 ))}
               </div>
@@ -214,76 +259,21 @@ const CaseDetail = () => {
             </div>
           )}
 
-          {/* D. 如何支持这个 case */}
+          {/* D. 如何支持 - clear hierarchy */}
           <div className="mt-3 rounded-xl bg-card p-4 shadow-sm">
             <h2 className="text-[15px] font-semibold text-foreground">如何支持</h2>
-            <p className="mt-0.5 text-[11px] text-muted-foreground">你可以通过以下方式帮助这个个案</p>
 
-            <div className="mt-3 space-y-2">
-              {/* 顶一顶 */}
-              <button
-                onClick={handleBoost}
-                className="flex w-full items-center gap-3 rounded-xl bg-[hsl(24,60%,94%)] p-3 text-left transition-transform active:scale-[0.98]"
-              >
-                <span className="text-xl">🐾</span>
-                <div className="flex-1">
-                  <p className="text-[13px] font-semibold text-[hsl(24,55%,30%)]">顶一顶</p>
-                  <p className="text-[11px] text-[hsl(24,30%,50%)]">增加热力值，让更多人看到</p>
-                </div>
-                <span className="text-[12px] font-bold text-[hsl(24,65%,42%)]">热力 +1</span>
-              </button>
-
-              {/* 生成海报 */}
-              <button
-                onClick={() => toast.success('海报生成中…')}
-                className="flex w-full items-center gap-3 rounded-xl bg-muted/60 p-3 text-left transition-transform active:scale-[0.98]"
-              >
-                <Image className="h-5 w-5 text-primary" />
-                <div className="flex-1">
-                  <p className="text-[13px] font-medium text-foreground">生成海报</p>
-                  <p className="text-[11px] text-muted-foreground">适合发到朋友圈、宠物群、小红书</p>
-                </div>
-              </button>
-
-              {/* 复制文案 */}
-              <button
-                onClick={handleCopyText}
-                className="flex w-full items-center gap-3 rounded-xl bg-muted/60 p-3 text-left transition-transform active:scale-[0.98]"
-              >
-                <Copy className="h-5 w-5 text-primary" />
-                <div className="flex-1">
-                  <p className="text-[13px] font-medium text-foreground">复制文案</p>
-                  <p className="text-[11px] text-muted-foreground">适合转发到群聊和社交媒体</p>
-                </div>
-              </button>
-
-              {/* 转发小程序 */}
-              <button
-                onClick={() => toast.success('已生成小程序卡片')}
-                className="flex w-full items-center gap-3 rounded-xl bg-muted/60 p-3 text-left transition-transform active:scale-[0.98]"
-              >
-                <MessageSquare className="h-5 w-5 text-primary" />
-                <div className="flex-1">
-                  <p className="text-[13px] font-medium text-foreground">转发小程序</p>
-                  <p className="text-[11px] text-muted-foreground">微信生态内快速传播</p>
-                </div>
-              </button>
-
-              {/* 联系发起人 */}
-              <button
-                onClick={() => setContactRevealed(true)}
-                className="flex w-full items-center gap-3 rounded-xl bg-muted/60 p-3 text-left transition-transform active:scale-[0.98]"
-              >
-                <Phone className="h-5 w-5 text-primary" />
-                <div className="flex-1">
-                  <p className="text-[13px] font-medium text-foreground">联系发起人</p>
-                  <p className="text-[11px] text-muted-foreground">直接确认如何帮助</p>
-                </div>
-              </button>
-            </div>
+            {/* Primary CTA */}
+            <button
+              onClick={() => setContactRevealed(true)}
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-[15px] font-semibold text-primary-foreground transition-colors active:bg-primary/90"
+            >
+              <Phone className="h-4.5 w-4.5" />
+              联系发起人
+            </button>
 
             {contactRevealed && (
-              <div className="mt-3 rounded-lg bg-[hsl(38,55%,95%)] p-3">
+              <div className="mt-2.5 rounded-lg bg-[hsl(38,55%,95%)] p-3">
                 <p className="text-[13px] font-medium text-foreground">{caseItem.contact}</p>
                 <button
                   onClick={() => { navigator.clipboard.writeText(caseItem.contact); toast.success('已复制联系方式'); }}
@@ -291,11 +281,50 @@ const CaseDetail = () => {
                 >
                   <Copy className="h-3 w-3" /> 复制联系方式
                 </button>
-                <p className="mt-1.5 text-[10px] text-muted-foreground leading-relaxed">
+                <p className="mt-1 text-[10px] text-muted-foreground leading-relaxed">
                   如可提供安置、转运、领养接手或资金支持，请直接联系发起人确认细节。
                 </p>
               </div>
             )}
+
+            {/* Secondary actions: boost + poster */}
+            <div className="mt-3 flex gap-2">
+              <button
+                onClick={handleBoost}
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-[hsl(24,55%,92%)] py-2.5 text-[13px] font-semibold text-[hsl(24,55%,30%)] transition-transform active:scale-[0.97]"
+              >
+                <PawPrint className="h-4.5 w-4.5" strokeWidth={2.5} />
+                顶一顶
+              </button>
+              <button
+                onClick={() => toast.success('海报生成中…')}
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-muted/70 py-2.5 text-[13px] font-medium text-foreground transition-transform active:scale-[0.97]"
+              >
+                <Image className="h-4 w-4 text-primary" />
+                生成海报
+              </button>
+            </div>
+
+            {/* Spread tools group */}
+            <div className="mt-3">
+              <p className="text-[12px] font-medium text-muted-foreground mb-2">帮它扩散</p>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleCopyText}
+                  className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-muted/50 py-2 text-[12px] text-muted-foreground transition-transform active:scale-[0.97]"
+                >
+                  <Copy className="h-3.5 w-3.5" />
+                  复制文案
+                </button>
+                <button
+                  onClick={() => toast.success('已生成小程序卡片')}
+                  className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-muted/50 py-2 text-[12px] text-muted-foreground transition-transform active:scale-[0.97]"
+                >
+                  <MessageSquare className="h-3.5 w-3.5" />
+                  转发小程序
+                </button>
+              </div>
+            </div>
 
             <p className="mt-3 text-[10px] text-muted-foreground leading-relaxed">
               分享、持续更新和上传凭证，也会帮助个案获得更多关注。分享可获得积分。
@@ -315,28 +344,30 @@ const CaseDetail = () => {
               {records.map((r, i) => (
                 <div key={r.id} className="flex gap-3">
                   <div className="flex flex-col items-center">
-                    <div className={`mt-0.5 h-2.5 w-2.5 rounded-full ${r.isEvidence ? 'bg-accent' : 'bg-muted-foreground/30'}`} />
-                    {i < records.length - 1 && <div className="h-10 w-px bg-border" />}
+                    <div className={`mt-1 h-2 w-2 rounded-full ${r.isEvidence ? 'bg-[hsl(24,75%,50%)]' : 'bg-muted-foreground/25'}`} />
+                    {i < records.length - 1 && <div className="flex-1 w-px bg-border" />}
                   </div>
-                  <div className="pb-4">
-                    <p className="text-[13px] font-medium text-foreground">{r.title}</p>
-                    <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                      <span className="text-[11px] text-muted-foreground">{r.time}</span>
-                      <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${
-                        r.tag === '关键凭证' ? 'bg-accent/15 text-accent-foreground' : 'bg-muted text-muted-foreground'
+                  <div className="pb-3.5">
+                    <p className="text-[13px] font-medium text-foreground leading-snug">{r.title}</p>
+                    <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
+                      <span className="text-[10px] text-muted-foreground">{r.time}</span>
+                      <span className={`rounded px-1.5 py-px text-[10px] font-medium ${
+                        r.tag === '关键凭证'
+                          ? 'bg-[hsl(35,60%,93%)] text-[hsl(28,55%,35%)]'
+                          : 'bg-muted text-muted-foreground'
                       }`}>{r.tag}</span>
                       {r.chainStatus === 'stored' && (
-                        <span className="flex items-center gap-0.5 rounded bg-primary/10 px-1.5 py-0.5 text-[10px] text-primary">
-                          <Link2 className="h-3 w-3" /> 已存证
+                        <span className="flex items-center gap-0.5 rounded border border-primary/20 px-1.5 py-px text-[10px] font-medium text-primary">
+                          <Link2 className="h-2.5 w-2.5" /> 已存证
                         </span>
                       )}
                       {r.chainStatus === 'pending' && (
-                        <span className="flex items-center gap-0.5 text-[10px] text-muted-foreground">
-                          <Clock className="h-3 w-3" /> 存证处理中
+                        <span className="flex items-center gap-0.5 text-[10px] text-muted-foreground/60">
+                          <Clock className="h-2.5 w-2.5" /> 存证处理中
                         </span>
                       )}
                     </div>
-                    {r.desc && <p className="mt-0.5 text-[11px] text-primary">{r.desc}</p>}
+                    {r.desc && <p className="mt-0.5 text-[10px] text-muted-foreground">{r.desc}</p>}
                   </div>
                 </div>
               ))}
@@ -347,7 +378,7 @@ const CaseDetail = () => {
           {publisher && (
             <button
               onClick={() => navigate(`/publisher/${publisher.id}`)}
-              className="mt-3 flex w-full items-center justify-between rounded-xl bg-muted/60 px-3 py-2.5"
+              className="mt-3 flex w-full items-center justify-between rounded-xl bg-muted/50 px-3 py-2.5"
             >
               <PublisherBadge publisher={publisher} size="md" showStats />
               <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/40" />
@@ -361,9 +392,10 @@ const CaseDetail = () => {
         <div className="flex gap-3">
           <button
             onClick={handleBoost}
-            className="flex items-center justify-center gap-1.5 rounded-xl bg-[hsl(24,60%,94%)] px-4 py-3 text-[14px] font-semibold text-[hsl(24,55%,30%)] transition-colors active:bg-[hsl(24,60%,88%)]"
+            className="flex items-center justify-center gap-1.5 rounded-xl bg-[hsl(24,55%,92%)] px-4 py-3 text-[14px] font-semibold text-[hsl(24,55%,30%)] transition-colors active:bg-[hsl(24,55%,86%)]"
           >
-            🐾 顶一顶
+            <PawPrint className="h-5 w-5" strokeWidth={2.5} />
+            顶一顶
           </button>
           <button
             onClick={() => setContactRevealed(true)}

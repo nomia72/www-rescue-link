@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import MobileLayout from '@/components/MobileLayout';
 import { mockUser, mockCases } from '@/data/mockData';
-import { Search, MapPin, Bell, Heart, Map, Package, ShoppingBag, SlidersHorizontal, X } from 'lucide-react';
+import { Search, Bell, Heart, Map, Package, ShoppingBag, SlidersHorizontal, X } from 'lucide-react';
 import CaseCard from '@/components/CaseCard';
 import { useState } from 'react';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerClose } from '@/components/ui/drawer';
@@ -86,12 +86,11 @@ const Index = () => {
       </div>
 
       <div className="px-4">
-        {/* A. Tool bar: location + search + bell */}
+        {/* A. Tool bar: search + bell (no location) */}
         <div className="mt-3 flex items-center gap-2">
-          <button className="flex shrink-0 items-center gap-1 rounded-xl bg-card px-3 py-2.5 text-[13px] text-muted-foreground shadow-sm">
-            <MapPin className="h-4 w-4" />
-            北京
-          </button>
+          <div className="flex items-center gap-1 shrink-0 text-[13px] font-medium text-muted-foreground">
+            上海
+          </div>
           <div className="flex flex-1 items-center gap-2 rounded-xl bg-card px-3.5 py-2.5 shadow-sm">
             <Search className="h-4 w-4 text-muted-foreground" />
             <span className="text-[12px] text-muted-foreground">搜索案号、用户名、关键词…</span>
@@ -171,7 +170,6 @@ const Index = () => {
             </DrawerClose>
           </DrawerHeader>
           <div className="px-5 pb-6 space-y-5">
-            {/* Status */}
             <div>
               <p className="mb-2 text-[13px] font-medium text-foreground">状态</p>
               <div className="flex flex-wrap gap-2">
@@ -188,7 +186,6 @@ const Index = () => {
                 ))}
               </div>
             </div>
-            {/* Urgency */}
             <div>
               <p className="mb-2 text-[13px] font-medium text-foreground">紧急程度</p>
               <div className="flex flex-wrap gap-2">
@@ -205,7 +202,6 @@ const Index = () => {
                 ))}
               </div>
             </div>
-            {/* Range */}
             <div>
               <p className="mb-2 text-[13px] font-medium text-foreground">范围</p>
               <div className="flex flex-wrap gap-2">
@@ -222,7 +218,6 @@ const Index = () => {
                 ))}
               </div>
             </div>
-            {/* Sort */}
             <div>
               <p className="mb-2 text-[13px] font-medium text-foreground">排序</p>
               <div className="flex flex-wrap gap-2">
@@ -239,7 +234,6 @@ const Index = () => {
                 ))}
               </div>
             </div>
-            {/* Actions */}
             <div className="flex gap-3 pt-2">
               <button
                 onClick={resetAdvancedFilters}
