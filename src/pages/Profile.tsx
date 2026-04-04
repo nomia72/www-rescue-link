@@ -32,7 +32,7 @@ const Profile = () => {
         <div className="mt-3 flex items-center justify-around rounded-xl bg-header-accent/60 p-3">
           <div className="text-center">
             <p className="text-xl font-bold text-header-fg">{mockUser.totalPoints}</p>
-            <p className="text-[10px] text-header-fg/60">总积分</p>
+            <p className="text-[10px] text-header-fg/60">总助力值</p>
           </div>
           <div className="h-8 w-px bg-header-fg/15" />
           <div className="text-center">
