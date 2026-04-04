@@ -69,7 +69,7 @@ const Index = () => {
         </div>
 
         {/* B. Light status bar - centered */}
-        <div className="mt-3 flex items-center justify-center gap-4 rounded-xl bg-card py-2.5 shadow-sm px-0">
+        <div className="mt-3 flex items-center justify-center gap-4 rounded-xl bg-card px-4 py-2.5 shadow-sm">
           <div className="flex items-baseline gap-1">
             <span className="text-[11px] text-muted-foreground">进行中</span>
             <span className="text-[18px] font-bold leading-none text-foreground">5</span>
