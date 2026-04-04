@@ -335,9 +335,9 @@ export const mockClues: LostPetClue[] = [
 ];
 
 export const mockAdoptions = [
-  { id: 'a1', type: '猫', name: '花花', age: '约1岁', gender: '母', location: '北京', status: '可领养', features: '三花猫，已绝育已免疫', character: '亲人粘人' },
+  { id: 'a1', type: '猫', name: '花花', age: '约1岁', gender: '母', location: '上海', status: '可领养', features: '三花猫，已绝育已免疫', character: '亲人粘人' },
   { id: 'a2', type: '狗', name: '旺财', age: '约3岁', gender: '公', location: '上海', status: '可领养', features: '中华田园犬，已绝育', character: '温顺听话' },
-  { id: 'a3', type: '猫', name: '雪球', age: '约6个月', gender: '公', location: '成都', status: '待审核', features: '白色长毛，蓝眼睛', character: '活泼好动' },
+  { id: 'a3', type: '猫', name: '雪球', age: '约6个月', gender: '公', location: '上海', status: '待审核', features: '白色长毛，蓝眼睛', character: '活泼好动' },
 ];
 
 export const mockShelters: ShelterItem[] = [
