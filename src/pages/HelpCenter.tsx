@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import MobileLayout from '@/components/MobileLayout';
 import { helpActions, caseHelpActions, mockCases } from '@/data/mockData';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Flame } from 'lucide-react';
 
 const HelpCenter = () => {
   const navigate = useNavigate();
@@ -41,9 +41,9 @@ const HelpCenter = () => {
           </div>
         </div>
 
-        {/* Use points section */}
+        {/* How to help section */}
         <div className="mt-6">
-          <h2 className="mb-2 text-sm font-semibold text-foreground">💝 使用积分帮助案例</h2>
+          <h2 className="mb-2 text-sm font-semibold text-foreground">🐾 如何支持个案</h2>
           <div className="space-y-2">
             {caseHelpActions.map((a) => (
               <button
@@ -84,24 +84,27 @@ const HelpCenter = () => {
           </button>
         </div>
 
-        {/* Cases needing help */}
+        {/* Cases needing attention */}
         <div className="mt-6">
           <h2 className="mb-2 text-sm font-semibold text-foreground">🆘 正在等待帮助</h2>
           {mockCases
-            .filter((c) => c.earnedPoints < c.totalPoints)
+            .filter((c) => c.needs.some(n => !n.fulfilled))
             .slice(0, 3)
             .map((c) => {
-              const remaining = c.totalPoints - c.earnedPoints;
+              const unfulfilledCount = c.needs.filter(n => !n.fulfilled && n.category === 'help').length;
               return (
                 <button
                   key={c.id}
                   onClick={() => navigate(`/case/${c.id}`)}
                   className="mb-2 flex w-full items-center gap-3 rounded-xl bg-card p-3 text-left shadow-sm active:scale-[0.98]"
                 >
-                  <span className="text-lg">{c.animalType === '猫' ? '🐱' : '🐶'}</span>
+                  <div className="flex items-center gap-1">
+                    <Flame className="h-4 w-4 text-[hsl(24,80%,55%)]" />
+                    <span className="text-[12px] font-bold text-[hsl(24,60%,40%)]">{c.heatValue}</span>
+                  </div>
                   <div className="flex-1">
                     <p className="text-sm font-medium text-foreground line-clamp-1">{c.title}</p>
-                    <p className="text-xs text-muted-foreground">还差 <span className="font-semibold text-points">{remaining}</span> 积分</p>
+                    <p className="text-xs text-muted-foreground">还需 <span className="font-semibold text-foreground">{unfulfilledCount}</span> 项帮助</p>
                   </div>
                   <ChevronRight className="h-4 w-4 text-muted-foreground" />
                 </button>

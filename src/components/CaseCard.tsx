@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { CaseItem } from '@/data/mockData';
 import { getPublisherForCase } from '@/data/publishers';
-import { MapPin, Star } from 'lucide-react';
+import { MapPin, Star, Flame } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import cat1 from '@/assets/cat1.jpg';
 import dog1 from '@/assets/dog1.jpg';
 import cat2 from '@/assets/cat2.jpg';
@@ -12,9 +13,26 @@ import dog3 from '@/assets/dog3.jpg';
 const caseImages: Record<string, string> = { '1': cat1, '2': dog1, '3': cat2, '4': dog2, '5': dog3 };
 const caseNumbers: Record<string, number> = { '1': 241, '2': 242, '3': 243, '4': 244, '5': 245 };
 
+const PawClapAnimation = ({ onDone }: { onDone: () => void }) => {
+  return (
+    <div className="fixed inset-0 z-[999] flex items-center justify-center pointer-events-none" onAnimationEnd={onDone}>
+      <div className="animate-paw-clap flex flex-col items-center">
+        <div className="flex items-center gap-1">
+          <span className="text-3xl animate-paw-left">🐾</span>
+          <span className="text-3xl animate-paw-right">🐾</span>
+        </div>
+        <span className="mt-1 text-[14px] font-bold text-primary animate-fade-in">热力 +1</span>
+      </div>
+    </div>
+  );
+};
+
 const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
   const navigate = useNavigate();
   const [followed, setFollowed] = useState(false);
+  const [showPawClap, setShowPawClap] = useState(false);
+  const [localHeat, setLocalHeat] = useState(caseItem.heatValue);
+  const [todayBoosts, setTodayBoosts] = useState(0);
   const imgSrc = caseImages[caseItem.id] || cat1;
   const publisher = getPublisherForCase(caseItem.id);
   const caseNo = caseNumbers[caseItem.id] || parseInt(caseItem.id);
@@ -26,13 +44,11 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
     .replace(/棠下村/, '天河区')
     .replace(/北京市/, '').replace(/上海市/, '').replace(/广州市/, '').replace(/成都市/, '').replace(/深圳市/, '');
 
-  // Assist needs progress
-  const assistNeeds = caseItem.needs.filter((n) => n.category === 'assist');
-  const assistFulfilled = assistNeeds.filter((n) => n.fulfilled).length;
-  const assistTotal = assistNeeds.length;
-
-  // Need tags (unfulfilled)
-  const needTags = caseItem.needs.filter((n) => !n.fulfilled).map((n) => n.name).slice(0, 3);
+  // Need tags (unfulfilled help needs only, not spread)
+  const needTags = caseItem.needs
+    .filter((n) => !n.fulfilled && n.category === 'help')
+    .map((n) => n.name)
+    .slice(0, 3);
   const updateCount = caseItem.timeline.length;
   const evidenceCount = caseItem.evidences.length;
 
@@ -41,87 +57,100 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
     setFollowed(!followed);
   };
 
+  const handleBoost = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (todayBoosts >= 5) {
+      toast('明天再来帮它顶一顶吧～', { duration: 2000 });
+      return;
+    }
+    setTodayBoosts(prev => prev + 1);
+    setLocalHeat(prev => prev + 1);
+    setShowPawClap(true);
+  };
+
   return (
-    <div className="mb-3 overflow-hidden rounded-2xl bg-card shadow-sm">
-      <button
-        onClick={() => navigate(`/case/${caseItem.id}`)}
-        className="flex w-full text-left transition-transform active:scale-[0.99]"
-      >
-        {/* Left: Photo */}
-        <div className="relative w-[30%] shrink-0 overflow-hidden">
-          <img src={imgSrc} alt={caseItem.title} loading="lazy" className="h-full w-full object-cover" style={{ minHeight: '160px' }} />
-        </div>
-
-        {/* Right: Info */}
-        <div className="flex w-[70%] flex-col justify-between p-3">
-          {/* Row 1: Case # + Urgency + Status + Animal + Star */}
-          <div className="flex items-center justify-between">
-            <div className="flex flex-wrap items-center gap-1.5">
-              <span className="text-[12px] font-medium text-muted-foreground">#{formattedNo}</span>
-              {caseItem.isUrgent && (
-                <span className="rounded-md bg-urgent px-1.5 py-0.5 text-[11px] font-bold text-urgent-foreground">紧急</span>
-              )}
-              <span className="rounded-md bg-accent/15 px-1.5 py-0.5 text-[11px] font-medium text-accent-foreground">{caseItem.status}</span>
-              <span className="rounded-md bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground">
-                {caseItem.animalType === '猫' ? '🐱' : '🐶'} {caseItem.animalType}
-              </span>
-            </div>
-            <button onClick={handleFollow} className="shrink-0 p-1">
-              <Star className={`h-4 w-4 transition-colors ${followed ? 'fill-points text-points' : 'text-muted-foreground/40'}`} />
-            </button>
+    <>
+      {showPawClap && <PawClapAnimation onDone={() => setShowPawClap(false)} />}
+      <div className="mb-3 overflow-hidden rounded-2xl bg-card shadow-sm">
+        <button
+          onClick={() => navigate(`/case/${caseItem.id}`)}
+          className="flex w-full text-left transition-transform active:scale-[0.99]"
+        >
+          {/* Left: Photo */}
+          <div className="relative w-[30%] shrink-0 overflow-hidden">
+            <img src={imgSrc} alt={caseItem.title} loading="lazy" className="h-full w-full object-cover" style={{ minHeight: '160px' }} />
           </div>
 
-          {/* Row 2: Title */}
-          <h3 className="mt-1 line-clamp-1 text-[15px] font-bold leading-snug text-foreground">{caseItem.title}</h3>
-
-          {/* Row 3: Summary */}
-          <p className="mt-0.5 line-clamp-1 text-[12px] text-muted-foreground">{caseItem.description.slice(0, 50)}</p>
-
-          {/* Row 4: Need tags */}
-          {needTags.length > 0 && (
-            <div className="mt-1.5 flex flex-wrap gap-1">
-              {needTags.map((tag) => (
-                <span key={tag} className="rounded bg-urgent/8 px-1.5 py-0.5 text-[10px] font-medium text-urgent">{tag}</span>
-              ))}
-            </div>
-          )}
-
-          {/* Row 5: Assist progress */}
-          {assistTotal > 0 && (
-            <div className="mt-1.5 flex items-center gap-2">
-              <div className="h-1 flex-1 rounded-full bg-muted overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-primary/60 transition-all"
-                  style={{ width: `${(assistFulfilled / assistTotal) * 100}%` }}
-                />
+          {/* Right: Info */}
+          <div className="flex w-[70%] flex-col justify-between p-3">
+            {/* Row 1: Case # + Urgency + Status + Animal + Star */}
+            <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="text-[12px] font-medium text-muted-foreground">#{formattedNo}</span>
+                {caseItem.urgencyLevel === '紧急' && (
+                  <span className="rounded-md bg-urgent px-1.5 py-0.5 text-[11px] font-bold text-urgent-foreground">紧急</span>
+                )}
+                {caseItem.urgencyLevel === '较急' && (
+                  <span className="rounded-md bg-[hsl(35,80%,90%)] px-1.5 py-0.5 text-[11px] font-bold text-[hsl(30,70%,35%)]">较急</span>
+                )}
+                <span className="rounded-md bg-accent/15 px-1.5 py-0.5 text-[11px] font-medium text-accent-foreground">{caseItem.status}</span>
+                <span className="rounded-md bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground">
+                  {caseItem.animalType}
+                </span>
               </div>
-              <span className="shrink-0 text-[10px] text-muted-foreground">
-                可助力项目 {assistFulfilled}/{assistTotal}
+              <button onClick={handleFollow} className="shrink-0 p-1">
+                <Star className={`h-4 w-4 transition-colors ${followed ? 'fill-points text-points' : 'text-muted-foreground/40'}`} />
+              </button>
+            </div>
+
+            {/* Row 2: Title */}
+            <h3 className="mt-1 line-clamp-1 text-[15px] font-bold leading-snug text-foreground">{caseItem.title}</h3>
+
+            {/* Row 3: Summary */}
+            <p className="mt-0.5 line-clamp-1 text-[12px] text-muted-foreground">{caseItem.description.slice(0, 50)}</p>
+
+            {/* Row 4: Need tags */}
+            {needTags.length > 0 && (
+              <div className="mt-1.5 flex flex-wrap gap-1">
+                {needTags.map((tag) => (
+                  <span key={tag} className="rounded bg-urgent/8 px-1.5 py-0.5 text-[10px] font-medium text-urgent">{tag}</span>
+                ))}
+              </div>
+            )}
+
+            {/* Row 5: Heat + update + evidence */}
+            <div className="mt-1.5 flex items-center gap-2 text-[11px] text-muted-foreground">
+              <span className="flex items-center gap-0.5">
+                <Flame className="h-3 w-3 text-[hsl(24,80%,55%)]" />
+                <span className="font-medium text-[hsl(24,60%,40%)]">{localHeat}</span>
               </span>
-            </div>
-          )}
-
-          {/* Row 6: Record info */}
-          <div className="mt-1.5 flex items-center gap-2 text-[11px] text-muted-foreground">
-            <span>已更新 {updateCount} 次</span>
-            <span>·</span>
-            <span>已上传 {evidenceCount} 份凭证</span>
-            <span>·</span>
-            <span>{caseItem.updatedAt}</span>
-          </div>
-
-          {/* Row 7: Publisher + location */}
-          <div className="mt-1.5 flex items-center justify-between">
-            <div className="flex items-center gap-1 text-[11px] text-muted-foreground min-w-0 truncate">
-              {publisher && <span>{publisher.name}发起</span>}
               <span>·</span>
-              <MapPin className="h-3 w-3 shrink-0" />
-              <span className="truncate">{simpleLocation}{caseItem.distance ? ` · ${caseItem.distance}` : ''}</span>
+              <span>更新 {updateCount}</span>
+              <span>·</span>
+              <span>凭证 {evidenceCount}</span>
+              <span>·</span>
+              <span>{caseItem.updatedAt}</span>
+            </div>
+
+            {/* Row 6: Publisher + location + boost */}
+            <div className="mt-1.5 flex items-center justify-between">
+              <div className="flex items-center gap-1 text-[11px] text-muted-foreground min-w-0 truncate">
+                {publisher && <span>{publisher.name}</span>}
+                <span>·</span>
+                <MapPin className="h-3 w-3 shrink-0" />
+                <span className="truncate">{simpleLocation}{caseItem.distance ? ` · ${caseItem.distance}` : ''}</span>
+              </div>
+              <button
+                onClick={handleBoost}
+                className="shrink-0 flex items-center gap-0.5 rounded-full bg-[hsl(24,60%,94%)] px-2 py-0.5 text-[10px] font-medium text-[hsl(24,65%,42%)] transition-transform active:scale-95"
+              >
+                🐾 顶一顶
+              </button>
             </div>
           </div>
-        </div>
-      </button>
-    </div>
+        </button>
+      </div>
+    </>
   );
 };
 
