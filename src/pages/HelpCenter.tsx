@@ -80,7 +80,7 @@ const HelpCenter = () => {
           >
             <span className="text-2xl">📖</span>
             <p className="mt-1 text-sm font-medium text-foreground">救助指南</p>
-            <p className="text-xs text-muted-foreground">学习即获积分</p>
+            <p className="text-xs text-muted-foreground">学习即获助力值</p>
           </button>
         </div>
 
