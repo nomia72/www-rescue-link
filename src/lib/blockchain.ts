@@ -30,7 +30,7 @@ const CONTRACT_ADDRESS: Hex =
   (import.meta.env.VITE_RESCUELINK_CONTRACT_ADDR as Hex) ??
   '0x0000000000000000000000000000000000000000'; // TODO: deploy & paste real address
 
-// ─── ABI (only what we need now) ─────────────────────────────────────
+// ─── ABI ─────────────────────────────────────────────────────────────
 export const RESCUELINK_ABI = [
   {
     name: 'createCase',
@@ -42,8 +42,18 @@ export const RESCUELINK_ABI = [
     ],
     outputs: [],
   },
+  {
+    name: 'addUpdate',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'caseId', type: 'bytes32' },
+      { name: 'updateHash', type: 'bytes32' },
+      { name: 'updateType', type: 'string' },
+    ],
+    outputs: [],
+  },
   // TODO: future functions
-  // addEvidence(bytes32 caseId, bytes32 evidenceHash, string evidenceType)
   // confirmService(bytes32 caseId, string serviceType, bytes32 receiptHash)
   // transferCase(bytes32 caseId, address newOwner)
   // redeemPoints(bytes32 redeemHash)
@@ -146,4 +156,47 @@ export async function createCaseOnChain(
     caseIdBytes32,
     metaHashBytes32,
   };
+}
+
+// ─── addUpdate on-chain ──────────────────────────────────────────────
+
+export interface AddUpdateOnChainResult {
+  txHash: string;
+}
+
+/**
+ * Call addUpdate on-chain. Falls back to mock if contract not deployed.
+ */
+export async function addUpdateOnChain(
+  caseIdBytes32: Hex,
+  updateHashBytes32: Hex,
+  updateType: string,
+): Promise<AddUpdateOnChainResult> {
+  if (CONTRACT_ADDRESS === '0x0000000000000000000000000000000000000000') {
+    console.warn('[blockchain] Contract not deployed – returning mock update tx');
+    const mockTx = keccak256(toBytes(`mock-update-${caseIdBytes32}-${Date.now()}`));
+    return { txHash: mockTx };
+  }
+
+  const ethereum = (window as any).ethereum;
+  if (!ethereum) {
+    throw new Error('No wallet detected.');
+  }
+
+  await ethereum.request({ method: 'eth_requestAccounts' });
+
+  const data = encodeFunctionData({
+    abi: RESCUELINK_ABI,
+    functionName: 'addUpdate',
+    args: [caseIdBytes32, updateHashBytes32, updateType],
+  });
+
+  const [account] = await ethereum.request({ method: 'eth_accounts' }) as string[];
+
+  const txHash = await ethereum.request({
+    method: 'eth_sendTransaction',
+    params: [{ from: account, to: CONTRACT_ADDRESS, data, chainId: '0xa869' }],
+  });
+
+  return { txHash: txHash as string };
 }
