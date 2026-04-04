@@ -26,6 +26,11 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
     .replace(/棠下村/, '天河区')
     .replace(/北京市/, '').replace(/上海市/, '').replace(/广州市/, '').replace(/成都市/, '').replace(/深圳市/, '');
 
+  // Assist needs progress
+  const assistNeeds = caseItem.needs.filter((n) => n.category === 'assist');
+  const assistFulfilled = assistNeeds.filter((n) => n.fulfilled).length;
+  const assistTotal = assistNeeds.length;
+
   // Need tags (unfulfilled)
   const needTags = caseItem.needs.filter((n) => !n.fulfilled).map((n) => n.name).slice(0, 3);
   const updateCount = caseItem.timeline.length;
@@ -81,7 +86,22 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
             </div>
           )}
 
-          {/* Row 5: Record info */}
+          {/* Row 5: Assist progress */}
+          {assistTotal > 0 && (
+            <div className="mt-1.5 flex items-center gap-2">
+              <div className="h-1 flex-1 rounded-full bg-muted overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-primary/60 transition-all"
+                  style={{ width: `${(assistFulfilled / assistTotal) * 100}%` }}
+                />
+              </div>
+              <span className="shrink-0 text-[10px] text-muted-foreground">
+                可助力项目 {assistFulfilled}/{assistTotal}
+              </span>
+            </div>
+          )}
+
+          {/* Row 6: Record info */}
           <div className="mt-1.5 flex items-center gap-2 text-[11px] text-muted-foreground">
             <span>已更新 {updateCount} 次</span>
             <span>·</span>
@@ -90,7 +110,7 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
             <span>{caseItem.updatedAt}</span>
           </div>
 
-          {/* Row 6: Publisher + location + CTA */}
+          {/* Row 7: Publisher + location */}
           <div className="mt-1.5 flex items-center justify-between">
             <div className="flex items-center gap-1 text-[11px] text-muted-foreground min-w-0 truncate">
               {publisher && <span>{publisher.name}发起</span>}

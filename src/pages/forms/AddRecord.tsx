@@ -4,6 +4,7 @@ import MobileLayout from '@/components/MobileLayout';
 import { ArrowLeft, CheckCircle2, Upload, Shield, Link2 } from 'lucide-react';
 
 const evidenceTypes = ['医院单据', '服务完成记录', '物资照片', '交接确认', '阶段照片', '其他'];
+const relatedEvents = ['发现现场', '已完成基础安置', '已送至医院', '已完成首诊', '已完成交接', '其他'];
 
 const AddRecord = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const AddRecord = () => {
   // Evidence form
   const [evidenceType, setEvidenceType] = useState('医院单据');
   const [evidenceNote, setEvidenceNote] = useState('');
+  const [relatedEvent, setRelatedEvent] = useState('');
 
   // Progress success
   if (submitted && activeTab === 'progress') {
@@ -46,6 +48,7 @@ const AddRecord = () => {
           <div className="mt-4 w-full rounded-xl bg-card p-4 shadow-sm text-sm space-y-1.5">
             <p><span className="text-muted-foreground">个案：</span>#00241</p>
             <p><span className="text-muted-foreground">凭证类型：</span>{evidenceType}</p>
+            <p><span className="text-muted-foreground">对应事项：</span>{relatedEvent}</p>
             <p><span className="text-muted-foreground">提交时间：</span>15:05</p>
             <p><span className="text-muted-foreground">存证编号：</span>RC-240315-018</p>
             <p><span className="text-muted-foreground">交易哈希：</span><span className="text-primary">0x8f3a...21bc</span></p>
@@ -54,7 +57,7 @@ const AddRecord = () => {
             <button onClick={() => navigate(-1)} className="w-full rounded-xl bg-primary py-3 text-sm font-medium text-primary-foreground">
               查看个案记录
             </button>
-            <button onClick={() => { setEvidenceSubmitted(false); setEvidenceNote(''); }} className="w-full rounded-xl bg-muted py-3 text-sm font-medium text-foreground">
+            <button onClick={() => { setEvidenceSubmitted(false); setEvidenceNote(''); setRelatedEvent(''); }} className="w-full rounded-xl bg-muted py-3 text-sm font-medium text-foreground">
               继续上传
             </button>
           </div>
@@ -97,7 +100,10 @@ const AddRecord = () => {
       <div className="px-4 pb-10">
         {activeTab === 'progress' ? (
           <>
-            <div className="mt-4 space-y-4">
+            {/* Tab description */}
+            <p className="mt-3 text-[12px] text-muted-foreground">用于补充近况与阶段变化，可附照片说明</p>
+
+            <div className="mt-3 space-y-4">
               <div>
                 <label className="mb-1 block text-xs font-medium text-foreground">更新标题</label>
                 <input
@@ -119,7 +125,7 @@ const AddRecord = () => {
                 />
               </div>
               <div>
-                <label className="mb-1 block text-xs font-medium text-foreground">上传图片</label>
+                <label className="mb-1 block text-xs font-medium text-foreground">上传图片（选填）</label>
                 <div className="flex h-28 items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/30">
                   <div className="flex flex-col items-center gap-2 text-muted-foreground">
                     <Upload className="h-7 w-7" />
@@ -137,7 +143,10 @@ const AddRecord = () => {
           </>
         ) : (
           <>
-            <div className="mt-4 space-y-4">
+            {/* Tab description */}
+            <p className="mt-3 text-[12px] text-muted-foreground">用于上传可证明关键事项的材料，提交后将生成存证记录</p>
+
+            <div className="mt-3 space-y-4">
               <div>
                 <label className="mb-1 block text-xs font-medium text-foreground">凭证类型</label>
                 <div className="flex flex-wrap gap-2">
@@ -150,6 +159,24 @@ const AddRecord = () => {
                   ))}
                 </div>
               </div>
+
+              {/* Related event - required */}
+              <div>
+                <label className="mb-1 block text-xs font-medium text-foreground">
+                  对应事项 <span className="text-urgent">*</span>
+                </label>
+                <p className="mb-1.5 text-[11px] text-muted-foreground">请选择这份材料对应的进展</p>
+                <div className="flex flex-wrap gap-2">
+                  {relatedEvents.map((ev) => (
+                    <button
+                      key={ev}
+                      onClick={() => setRelatedEvent(ev)}
+                      className={`rounded-lg px-3 py-2 text-xs ${relatedEvent === ev ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}
+                    >{ev}</button>
+                  ))}
+                </div>
+              </div>
+
               <div>
                 <label className="mb-1 block text-xs font-medium text-foreground">补充说明</label>
                 <textarea
@@ -166,7 +193,7 @@ const AddRecord = () => {
                 <div className="flex h-28 items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/30">
                   <div className="flex flex-col items-center gap-2 text-muted-foreground">
                     <Upload className="h-7 w-7" />
-                    <span className="text-xs">上传单据、截图、照片或其他证明材料</span>
+                    <span className="text-xs">上传单据、截图、证明照片或其他材料</span>
                   </div>
                 </div>
               </div>
@@ -183,8 +210,14 @@ const AddRecord = () => {
             </div>
 
             <button
-              onClick={() => setEvidenceSubmitted(true)}
-              className="mt-6 w-full rounded-xl bg-primary py-3.5 text-sm font-semibold text-primary-foreground"
+              onClick={() => {
+                if (!relatedEvent) {
+                  return;
+                }
+                setEvidenceSubmitted(true);
+              }}
+              disabled={!relatedEvent}
+              className="mt-6 w-full rounded-xl bg-primary py-3.5 text-sm font-semibold text-primary-foreground disabled:opacity-50"
             >
               提交并存证
             </button>

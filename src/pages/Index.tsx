@@ -13,6 +13,8 @@ const channels = [
   { label: '公益商城', path: '/shop', icon: ShoppingBag, bg: 'bg-[hsl(32,58%,94%)]', iconColor: 'text-[hsl(28,72%,50%)]', titleColor: 'text-[hsl(28,55%,33%)]' },
 ];
 
+const animalFilters = ['全部', '猫', '狗', '其他'];
+
 const Index = () => {
   const navigate = useNavigate();
   const [animalFilter, setAnimalFilter] = useState('全部');
@@ -25,8 +27,6 @@ const Index = () => {
   const [sortBy, setSortBy] = useState('最新发布');
 
   const hasAdvancedFilter = statusFilter !== '全部' || urgencyFilter !== '全部' || rangeFilter !== '全部' || sortBy !== '最新发布';
-
-  const totalCases = mockCases.length;
 
   const filteredCases = mockCases.filter((c) => {
     const animalMatch = animalFilter === '全部' ||
@@ -68,25 +68,23 @@ const Index = () => {
           </button>
         </div>
 
-        {/* B. Light status bar - centered */}
-        <div className="mt-3 flex items-center justify-center gap-4 rounded-xl bg-card px-4 py-2.5 shadow-sm">
-          <div className="flex items-baseline gap-1">
-            <span className="text-[11px] text-muted-foreground">进行中</span>
-            <span className="text-[18px] font-bold leading-none text-foreground">5</span>
+        {/* B. Status card - three equal columns */}
+        <div className="mt-3 grid grid-cols-3 rounded-xl bg-card shadow-sm overflow-hidden">
+          <div className="px-3 py-2.5">
+            <p className="text-[11px] text-muted-foreground">进行中</p>
+            <p className="mt-0.5 text-[20px] font-bold leading-none text-foreground">5</p>
           </div>
-          <div className="h-4 w-px bg-border" />
-          <div className="flex items-baseline gap-1">
-            <span className="text-[11px] text-muted-foreground">待补记录</span>
-            <span className="text-[18px] font-bold leading-none text-foreground">3</span>
+          <div className="border-l border-border px-3 py-2.5">
+            <p className="text-[11px] text-muted-foreground">待补记录</p>
+            <p className="mt-0.5 text-[20px] font-bold leading-none text-foreground">3</p>
           </div>
-          <div className="h-4 w-px bg-border" />
-          <div className="flex items-baseline gap-1">
-            <span className="text-[11px] text-muted-foreground">助力值</span>
-            <span className="text-[18px] font-bold leading-none text-points">300</span>
+          <div className="border-l border-border px-3 py-2.5">
+            <p className="text-[11px] text-muted-foreground">助力值</p>
+            <p className="mt-0.5 text-[20px] font-bold leading-none text-points">300</p>
           </div>
         </div>
 
-        {/* C. Quick entry channels - 4 cols, no sub text */}
+        {/* C. Quick entry channels - 4 cols */}
         <div className="mt-3 grid grid-cols-4 gap-2">
           {channels.map((ch) => {
             const Icon = ch.icon;
@@ -103,15 +101,17 @@ const Index = () => {
           })}
         </div>
 
-        {/* D. Single filter row: animal type + filter icon */}
-        <div className="mt-3 flex items-center gap-1.5">
-          <div className="flex flex-1 gap-1.5 overflow-x-auto hide-scrollbar">
-            {['全部', '猫', '狗', '其他'].map((f) => (
+        {/* D. Segmented control filter + filter icon */}
+        <div className="mt-3 flex items-center gap-2">
+          <div className="flex flex-1 rounded-lg bg-muted p-0.5">
+            {animalFilters.map((f) => (
               <button
                 key={f}
                 onClick={() => setAnimalFilter(f)}
-                className={`shrink-0 rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors ${
-                  animalFilter === f ? 'bg-primary text-primary-foreground' : 'bg-card text-muted-foreground shadow-sm'
+                className={`flex-1 rounded-md py-1.5 text-[13px] font-medium transition-colors ${
+                  animalFilter === f
+                    ? 'bg-card text-foreground shadow-sm'
+                    : 'text-muted-foreground'
                 }`}
               >
                 {f}
@@ -120,8 +120,8 @@ const Index = () => {
           </div>
           <button
             onClick={() => setFilterOpen(true)}
-            className={`relative flex shrink-0 items-center gap-1 rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors ${
-              hasAdvancedFilter ? 'bg-primary text-primary-foreground' : 'bg-card text-muted-foreground shadow-sm'
+            className={`relative flex shrink-0 items-center gap-1 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors ${
+              hasAdvancedFilter ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
             }`}
           >
             <SlidersHorizontal className="h-3.5 w-3.5" />

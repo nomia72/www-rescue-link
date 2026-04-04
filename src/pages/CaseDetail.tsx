@@ -3,7 +3,7 @@ import MobileLayout from '@/components/MobileLayout';
 import { mockCases } from '@/data/mockData';
 import { getPublisherForCase } from '@/data/publishers';
 import PublisherBadge from '@/components/PublisherBadge';
-import { ArrowLeft, Share2, MapPin, Shield, CheckCircle2, Clock, Link2, AlertTriangle, Heart, ChevronRight, Star } from 'lucide-react';
+import { ArrowLeft, Share2, MapPin, Shield, CheckCircle2, Clock, Link2, AlertTriangle, Heart, ChevronRight, Star, PawPrint } from 'lucide-react';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import cat1 from '@/assets/cat1.jpg';
@@ -20,6 +20,8 @@ const CaseDetail = () => {
   const navigate = useNavigate();
   const caseItem = mockCases.find((c) => c.id === id);
   const [saved, setSaved] = useState(false);
+  const [quickAssistAnim, setQuickAssistAnim] = useState(false);
+  const [floatingPoints, setFloatingPoints] = useState(false);
 
   if (!caseItem) {
     return (
@@ -40,7 +42,7 @@ const CaseDetail = () => {
   const assistFulfilled = assistNeeds.filter((n) => n.fulfilled).length;
   const assistTotal = assistNeeds.length;
 
-  // Merge timeline + evidences into unified record, sorted by date
+  // Merge timeline + evidences into unified record
   const records = [
     ...caseItem.timeline.map((t, i) => ({
       id: `t-${i}`,
@@ -62,9 +64,17 @@ const CaseDetail = () => {
     })),
   ].sort((a, b) => b.time.localeCompare(a.time));
 
+  const handleQuickAssist = () => {
+    setQuickAssistAnim(true);
+    setFloatingPoints(true);
+    toast.success('已助力 +5');
+    setTimeout(() => setQuickAssistAnim(false), 400);
+    setTimeout(() => setFloatingPoints(false), 1000);
+  };
+
   return (
     <MobileLayout hideTabBar>
-      {/* A. Cover image with overlay buttons */}
+      {/* A. Cover image */}
       <div className="relative">
         <img src={imgSrc} alt={caseItem.title} className="h-56 w-full object-cover" />
         <div className="absolute left-3 top-3">
@@ -118,17 +128,36 @@ const CaseDetail = () => {
             <p className="mt-2 text-[13px] leading-relaxed text-foreground">{caseItem.description}</p>
           </div>
 
-          {/* D. Needs - split into two groups */}
           {/* D1. 可助力项目 */}
           {assistNeeds.length > 0 && (
             <div className="mt-3 rounded-xl bg-card p-4 shadow-sm">
               <div className="flex items-center justify-between">
                 <h2 className="text-[15px] font-semibold text-foreground">可助力项目</h2>
-                <span className="text-[11px] text-muted-foreground">
+                <div className="relative flex items-center">
+                  <button
+                    onClick={handleQuickAssist}
+                    className={`flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-medium text-primary transition-transform ${quickAssistAnim ? 'scale-110' : ''}`}
+                  >
+                    <PawPrint className={`h-3.5 w-3.5 transition-transform ${quickAssistAnim ? 'scale-125' : ''}`} />
+                    快速助力 +5
+                  </button>
+                  {floatingPoints && (
+                    <span className="absolute -top-4 right-1 animate-bounce text-[12px] font-bold text-primary">+5</span>
+                  )}
+                </div>
+              </div>
+              <p className="mt-0.5 text-[11px] text-muted-foreground">可通过助力值补足的物资与服务</p>
+              <div className="mt-2 flex items-center gap-2">
+                <div className="h-1.5 flex-1 rounded-full bg-muted overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-primary/60 transition-all"
+                    style={{ width: `${(assistFulfilled / assistTotal) * 100}%` }}
+                  />
+                </div>
+                <span className="shrink-0 text-[11px] text-muted-foreground">
                   已完成 {assistFulfilled}/{assistTotal} 项
                 </span>
               </div>
-              <p className="mt-0.5 text-[11px] text-muted-foreground">可通过助力值补足的物资与服务</p>
               <div className="mt-3 space-y-2.5">
                 {assistNeeds.map((n) => (
                   <div key={n.id} className="flex items-start justify-between">
@@ -241,7 +270,7 @@ const CaseDetail = () => {
         </div>
       </div>
 
-      {/* G. Fixed bottom bar - only 去助力 */}
+      {/* G. Fixed bottom bar */}
       <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-[430px] -translate-x-1/2 border-t border-border bg-card px-4 py-3 safe-bottom">
         <button
           onClick={() => toast.success('助力功能即将上线')}
