@@ -9,7 +9,7 @@ const menuItems = [
   { label: '我关注的个案', count: mockUser.casesFollowed, icon: '⭐' },
   { label: '我参与的助力', count: mockUser.helpsGiven, icon: '🤝' },
   { label: '我更新的记录', count: 5, icon: '📋' },
-  { label: '积分记录', count: null, icon: '💰' },
+  { label: '助力值记录', count: null, icon: '💰' },
 ];
 
 const Profile = () => {
