@@ -53,8 +53,40 @@ const Index = () => {
 
   return (
     <MobileLayout>
+      {/* Personal header band */}
+      <div className="bg-[hsl(38,55%,92%)] px-4 pb-3 pt-3">
+        <div className="flex items-center gap-3">
+          {/* Left: avatar + name + tagline */}
+          <div className="flex items-center gap-2.5 min-w-0" style={{ flex: '0 0 38%' }}>
+            <Avatar className="h-9 w-9 shrink-0 ring-2 ring-white/60">
+              <AvatarFallback className="bg-[hsl(28,60%,85%)] text-[hsl(24,60%,35%)] text-[13px] font-bold">
+                {mockUser.name.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="min-w-0">
+              <p className="text-[14px] font-bold leading-tight text-[hsl(24,45%,25%)]">{mockUser.name}</p>
+              <p className="mt-0.5 text-[10px] leading-tight text-[hsl(24,30%,50%)]">每一次助力都在被认真记录</p>
+            </div>
+          </div>
+
+          {/* Right: 3-col stats */}
+          <div className="flex flex-1 min-w-0">
+            {[
+              { label: '进行中', value: '5', color: 'text-foreground' },
+              { label: '待补记录', value: '3', color: 'text-foreground' },
+              { label: '助力值', value: '600', color: 'text-[hsl(24,75%,45%)]' },
+            ].map((item, i) => (
+              <div key={item.label} className={`flex-1 ${i > 0 ? 'border-l border-[hsl(30,30%,82%)]' : ''} pl-2.5`}>
+                <p className="text-[10px] text-[hsl(24,25%,52%)]">{item.label}</p>
+                <p className={`text-[18px] font-bold leading-none mt-0.5 ${item.color}`}>{item.value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div className="px-4">
-        {/* A. Top bar */}
+        {/* A. Tool bar: location + search + bell */}
         <div className="mt-3 flex items-center gap-2">
           <button className="flex shrink-0 items-center gap-1 rounded-xl bg-card px-3 py-2.5 text-[13px] text-muted-foreground shadow-sm">
             <MapPin className="h-4 w-4" />
@@ -67,22 +99,6 @@ const Index = () => {
           <button className="flex shrink-0 items-center justify-center rounded-xl bg-card p-2.5 shadow-sm">
             <Bell className="h-4 w-4 text-muted-foreground" />
           </button>
-        </div>
-
-        {/* B. Status card - three equal columns */}
-        <div className="mt-3 grid grid-cols-3 rounded-xl bg-card shadow-sm overflow-hidden">
-          <div className="px-3 py-2.5">
-            <p className="text-[11px] text-muted-foreground">进行中</p>
-            <p className="mt-0.5 text-[20px] font-bold leading-none text-foreground">5</p>
-          </div>
-          <div className="border-l border-border px-3 py-2.5">
-            <p className="text-[11px] text-muted-foreground">待补记录</p>
-            <p className="mt-0.5 text-[20px] font-bold leading-none text-foreground">3</p>
-          </div>
-          <div className="border-l border-border px-3 py-2.5">
-            <p className="text-[11px] text-muted-foreground">助力值</p>
-            <p className="mt-0.5 text-[20px] font-bold leading-none text-points">300</p>
-          </div>
         </div>
 
         {/* C. Quick entry channels - 4 cols */}
