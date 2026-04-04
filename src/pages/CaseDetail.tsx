@@ -39,6 +39,7 @@ const CaseDetail = () => {
   const [todayBoosts, setTodayBoosts] = useState(0);
   const [contactRevealed, setContactRevealed] = useState(false);
   const [descExpanded, setDescExpanded] = useState(false);
+  const [needsExpanded, setNeedsExpanded] = useState(false);
 
   if (!caseItem) {
     return (
