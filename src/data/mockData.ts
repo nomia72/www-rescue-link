@@ -343,8 +343,8 @@ export const mockAdoptions = [
 export const mockShelters: ShelterItem[] = [
   {
     id: 'sh1',
-    name: '朝阳流浪猫救助小院',
-    location: '北京 · 朝阳区',
+    name: '浦东流浪猫救助小院',
+    location: '上海 · 浦东新区',
     avatar: '',
     description: '专注社区流浪猫TNR与救助，目前收容32只猫咪，日常运营需要持续物资支持。',
     animalCount: 32,
@@ -355,8 +355,8 @@ export const mockShelters: ShelterItem[] = [
       { id: 'sn3', name: '驱虫药 30支', pointsCost: 80, fulfilled: true, desc: '体内外驱虫' },
     ],
     redeemableItems: [
-      { id: 'ri1', name: '买给小院：猫粮5斤装', pointsCost: 50, desc: '直接寄送到小院，含物流追踪', shelterName: '朝阳流浪猫救助小院' },
-      { id: 'ri2', name: '买给小院：猫砂5袋', pointsCost: 40, desc: '直接寄送到小院，含物流追踪', shelterName: '朝阳流浪猫救助小院' },
+      { id: 'ri1', name: '买给小院：猫粮5斤装', pointsCost: 50, desc: '直接寄送到小院，含物流追踪', shelterName: '浦东流浪猫救助小院' },
+      { id: 'ri2', name: '买给小院：猫砂5袋', pointsCost: 40, desc: '直接寄送到小院，含物流追踪', shelterName: '浦东流浪猫救助小院' },
     ],
     feedbackMessages: [
       '感谢大家上周捐赠的猫粮，32只毛孩子吃得很开心！',
@@ -386,8 +386,8 @@ export const mockShelters: ShelterItem[] = [
   },
   {
     id: 'sh3',
-    name: '天河社区猫TNR基地',
-    location: '广州 · 天河区',
+    name: '徐汇社区猫TNR基地',
+    location: '上海 · 徐汇区',
     avatar: '',
     description: '社区猫绝育与管理基地，与多家医院合作开展TNR计划。',
     animalCount: 45,
@@ -397,7 +397,7 @@ export const mockShelters: ShelterItem[] = [
       { id: 'sn8', name: '术后恢复用品', pointsCost: 80, fulfilled: false },
     ],
     redeemableItems: [
-      { id: 'ri4', name: '买给小院：术后营养罐头x6', pointsCost: 45, desc: '直接寄送到小院，含物流追踪', shelterName: '天河社区猫TNR基地' },
+      { id: 'ri4', name: '买给小院：术后营养罐头x6', pointsCost: 45, desc: '直接寄送到小院，含物流追踪', shelterName: '徐汇社区猫TNR基地' },
     ],
     feedbackMessages: [
       '第11期TNR计划圆满完成，共绝育12只社区猫。',
@@ -406,9 +406,9 @@ export const mockShelters: ShelterItem[] = [
 ];
 
 export const mockShelterNeeds = [
-  { id: 's1', shelter: '朝阳流浪猫救助小院', location: '北京', needs: ['猫粮 50斤', '猫砂 20袋', '驱虫药 30支'], points: 400, urgency: '日常' },
+  { id: 's1', shelter: '浦东流浪猫救助小院', location: '上海', needs: ['猫粮 50斤', '猫砂 20袋', '驱虫药 30支'], points: 400, urgency: '日常' },
   { id: 's2', shelter: '浦东爱心狗狗之家', location: '上海', needs: ['狗粮 80斤', '笼子 5个', '垫子 10个'], points: 600, urgency: '紧缺' },
-  { id: 's3', shelter: '天河社区猫TNR基地', location: '广州', needs: ['绝育名额 10个', '术后恢复用品', '协助转运'], points: 800, urgency: '日常' },
+  { id: 's3', shelter: '徐汇社区猫TNR基地', location: '上海', needs: ['绝育名额 10个', '术后恢复用品', '协助转运'], points: 800, urgency: '日常' },
 ];
 
 export const mockShopItems: ShopItem[] = [
