@@ -3,7 +3,7 @@ import MobileLayout from '@/components/MobileLayout';
 import { mockCases } from '@/data/mockData';
 import { getPublisherForCase } from '@/data/publishers';
 import PublisherBadge from '@/components/PublisherBadge';
-import { ArrowLeft, Share2, MapPin, Shield, CheckCircle2, Clock, Link2, AlertTriangle, Heart, ChevronRight, Star, BookmarkPlus } from 'lucide-react';
+import { ArrowLeft, Share2, MapPin, Shield, CheckCircle2, Clock, Link2, AlertTriangle, Heart, ChevronRight, Star } from 'lucide-react';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import cat1 from '@/assets/cat1.jpg';
@@ -34,15 +34,17 @@ const CaseDetail = () => {
   const caseNo = caseNumbers[caseItem.id] || parseInt(caseItem.id);
   const formattedNo = String(caseNo).padStart(5, '0');
 
-  // Need tags from mock data
-  const needLabels = caseItem.needs.filter((n) => !n.fulfilled).map((n) => n.name);
-  const fulfilledLabels = caseItem.needs.filter((n) => n.fulfilled).map((n) => n.name);
+  // Split needs by category
+  const assistNeeds = caseItem.needs.filter((n) => n.category === 'assist');
+  const collabNeeds = caseItem.needs.filter((n) => n.category === 'collab');
+  const assistFulfilled = assistNeeds.filter((n) => n.fulfilled).length;
+  const assistTotal = assistNeeds.length;
 
   // Merge timeline + evidences into unified record, sorted by date
   const records = [
     ...caseItem.timeline.map((t, i) => ({
       id: `t-${i}`,
-      title: t.type === 'milestone' ? t.content : t.content,
+      title: t.content,
       desc: '',
       time: t.date,
       tag: t.type === 'milestone' ? '基础记录' : '进展更新',
@@ -72,9 +74,9 @@ const CaseDetail = () => {
         </div>
         <div className="absolute right-3 top-3 flex gap-2">
           <button onClick={() => { setSaved(!saved); toast.success(saved ? '已取消收藏' : '已收藏'); }} className="rounded-full bg-black/30 p-2 backdrop-blur">
-            <BookmarkPlus className={`h-5 w-5 ${saved ? 'fill-white text-white' : 'text-white'}`} />
+            <Star className={`h-5 w-5 ${saved ? 'fill-white text-white' : 'text-white'}`} />
           </button>
-          <button onClick={() => toast.success('链接已复制')} className="rounded-full bg-black/30 p-2 backdrop-blur">
+          <button onClick={() => toast.success('已生成分享内容')} className="rounded-full bg-black/30 p-2 backdrop-blur">
             <Share2 className="h-5 w-5 text-white" />
           </button>
         </div>
@@ -86,7 +88,7 @@ const CaseDetail = () => {
         )}
       </div>
 
-      <div className="pb-28">
+      <div className="pb-20">
         <div className="px-4">
           {/* B. Case header */}
           <div className="mt-3 flex flex-wrap items-center gap-1.5">
@@ -116,29 +118,68 @@ const CaseDetail = () => {
             <p className="mt-2 text-[13px] leading-relaxed text-foreground">{caseItem.description}</p>
           </div>
 
-          {/* D. Current needs */}
-          <div className="mt-3 rounded-xl bg-card p-4 shadow-sm">
-            <h2 className="text-[15px] font-semibold text-foreground">当前需要</h2>
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {needLabels.map((n) => (
-                <span key={n} className="rounded-lg bg-urgent/8 px-2.5 py-1 text-[12px] font-medium text-urgent ring-1 ring-urgent/10">
-                  {n}
+          {/* D. Needs - split into two groups */}
+          {/* D1. 可助力项目 */}
+          {assistNeeds.length > 0 && (
+            <div className="mt-3 rounded-xl bg-card p-4 shadow-sm">
+              <div className="flex items-center justify-between">
+                <h2 className="text-[15px] font-semibold text-foreground">可助力项目</h2>
+                <span className="text-[11px] text-muted-foreground">
+                  已完成 {assistFulfilled}/{assistTotal} 项
                 </span>
-              ))}
-            </div>
-            {fulfilledLabels.length > 0 && (
-              <div className="mt-2">
-                <p className="text-[11px] text-muted-foreground mb-1">已收到</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {fulfilledLabels.map((n) => (
-                    <span key={n} className="rounded-lg bg-primary/8 px-2.5 py-1 text-[12px] text-primary/70 line-through">
-                      {n}
-                    </span>
-                  ))}
-                </div>
               </div>
-            )}
-          </div>
+              <p className="mt-0.5 text-[11px] text-muted-foreground">可通过助力值补足的物资与服务</p>
+              <div className="mt-3 space-y-2.5">
+                {assistNeeds.map((n) => (
+                  <div key={n.id} className="flex items-start justify-between">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5">
+                        {n.fulfilled ? (
+                          <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-primary" />
+                        ) : (
+                          <div className="h-3.5 w-3.5 shrink-0 rounded-full border-2 border-muted-foreground/30" />
+                        )}
+                        <span className={`text-[13px] font-medium ${n.fulfilled ? 'text-primary/70 line-through' : 'text-foreground'}`}>
+                          {n.name}
+                        </span>
+                      </div>
+                      {n.desc && <p className="ml-5 mt-0.5 text-[11px] text-muted-foreground">{n.desc}</p>}
+                    </div>
+                    <span className={`shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium ${
+                      n.fulfilled ? 'bg-primary/10 text-primary' : 'bg-urgent/8 text-urgent'
+                    }`}>
+                      {n.fulfilled ? '已完成' : '待助力'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* D2. 协作需求 */}
+          {collabNeeds.length > 0 && (
+            <div className="mt-3 rounded-xl bg-card p-4 shadow-sm">
+              <h2 className="text-[15px] font-semibold text-foreground">协作需求</h2>
+              <p className="mt-0.5 text-[11px] text-muted-foreground">需要真实接力与线下支持</p>
+              <div className="mt-3 space-y-2.5">
+                {collabNeeds.map((n) => (
+                  <div key={n.id}>
+                    <div className="flex items-center gap-1.5">
+                      <div className="h-3.5 w-3.5 shrink-0 rounded-full border-2 border-accent/50" />
+                      <span className="text-[13px] font-medium text-foreground">{n.name}</span>
+                    </div>
+                    {n.desc && <p className="ml-5 mt-0.5 text-[11px] text-muted-foreground">{n.desc}</p>}
+                    <button
+                      onClick={() => toast.success('已发送协助意向')}
+                      className="ml-5 mt-1 rounded-md bg-muted px-2.5 py-1 text-[11px] font-medium text-foreground transition-colors active:bg-muted/80"
+                    >
+                      我可以帮忙
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* E. Timeline records */}
           <div className="mt-3 rounded-xl bg-card p-4 shadow-sm">
@@ -200,24 +241,15 @@ const CaseDetail = () => {
         </div>
       </div>
 
-      {/* G. Fixed bottom bar */}
+      {/* G. Fixed bottom bar - only 去助力 */}
       <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-[430px] -translate-x-1/2 border-t border-border bg-card px-4 py-3 safe-bottom">
-        <div className="flex gap-2">
-          <button
-            onClick={() => toast.success('助力功能即将上线')}
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary py-3 text-[15px] font-semibold text-primary-foreground transition-colors active:bg-primary/90"
-          >
-            <Heart className="h-4 w-4" />
-            去助力
-          </button>
-          <button
-            onClick={() => { setSaved(!saved); toast.success(saved ? '已取消收藏' : '已收藏'); }}
-            className="flex items-center justify-center gap-1.5 rounded-xl bg-muted px-4 py-3 text-[14px] font-medium text-foreground transition-colors active:bg-muted/80"
-          >
-            <Star className={`h-4 w-4 ${saved ? 'fill-points text-points' : ''}`} />
-            收藏个案
-          </button>
-        </div>
+        <button
+          onClick={() => toast.success('助力功能即将上线')}
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 text-[15px] font-semibold text-primary-foreground transition-colors active:bg-primary/90"
+        >
+          <Heart className="h-4 w-4" />
+          去助力
+        </button>
       </div>
     </MobileLayout>
   );
