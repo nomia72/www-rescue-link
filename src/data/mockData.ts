@@ -109,9 +109,9 @@ export interface ShelterRedeemItem {
 }
 
 export const mockUser = {
-  name: '小明',
+  name: 'Bala',
   avatar: '',
-  totalPoints: 300,
+  totalPoints: 600,
   todayEarned: 35,
   todayRemaining: 65,
   level: '爱心守护者',
