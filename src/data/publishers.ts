@@ -44,7 +44,7 @@ export const mockPublishers: Publisher[] = [
     helpsReceived: 210,
     followers: 520,
     certifiedShelter: true,
-    longTermNeeds: ['猫粮 50斤/月', '猫砂 30袋/月', '驱虫药', '志愿者'],
+    longTermNeeds: ['猫粮 50斤/月', '猫砂 30袋/月', '驱虫药'],
   },
   {
     id: 'p3',
