@@ -16,7 +16,7 @@ const HelpCenter = () => {
       <div className="px-4 pb-6">
         {/* Daily earn section */}
         <div className="mt-4">
-          <h2 className="mb-2 text-sm font-semibold text-foreground">🌟 获取积分</h2>
+          <h2 className="mb-2 text-sm font-semibold text-foreground">🌟 获取助力值</h2>
           <div className="space-y-2">
             {helpActions.map((a) => (
               <button
