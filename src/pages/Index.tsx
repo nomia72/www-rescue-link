@@ -68,11 +68,11 @@ const Index = () => {
           </button>
         </div>
 
-        {/* B. Light status bar - left aligned with prominent numbers */}
-        <div className="mt-3 flex items-center gap-4 rounded-xl bg-card px-4 py-2.5 shadow-sm">
+        {/* B. Light status bar - centered */}
+        <div className="mt-3 flex items-center justify-center gap-4 rounded-xl bg-card px-4 py-2.5 shadow-sm">
           <div className="flex items-baseline gap-1">
             <span className="text-[11px] text-muted-foreground">进行中</span>
-            <span className="text-[18px] font-bold leading-none text-foreground">{totalCases}</span>
+            <span className="text-[18px] font-bold leading-none text-foreground">5</span>
           </div>
           <div className="h-4 w-px bg-border" />
           <div className="flex items-baseline gap-1">
@@ -82,7 +82,7 @@ const Index = () => {
           <div className="h-4 w-px bg-border" />
           <div className="flex items-baseline gap-1">
             <span className="text-[11px] text-muted-foreground">助力值</span>
-            <span className="text-[18px] font-bold leading-none text-points">{mockUser.totalPoints}</span>
+            <span className="text-[18px] font-bold leading-none text-points">300</span>
           </div>
         </div>
 
