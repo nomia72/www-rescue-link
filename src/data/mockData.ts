@@ -115,7 +115,7 @@ export const mockUser = {
   todayEarned: 35,
   todayRemaining: 65,
   level: '爱心守护者',
-  badges: ['初心救助者', '积分先锋', '传播之星'],
+  badges: ['初心救助者', '助力先锋', '传播之星'],
   casesPublished: 3,
   casesFollowed: 8,
   helpsGiven: 12,
