@@ -16,7 +16,7 @@ const HelpCenter = () => {
       <div className="px-4 pb-6">
         {/* Daily earn section */}
         <div className="mt-4">
-          <h2 className="mb-2 text-sm font-semibold text-foreground">🌟 获取积分</h2>
+          <h2 className="mb-2 text-sm font-semibold text-foreground">🌟 获取助力值</h2>
           <div className="space-y-2">
             {helpActions.map((a) => (
               <button
@@ -33,7 +33,7 @@ const HelpCenter = () => {
                   <p className="text-xs text-muted-foreground">{a.desc}</p>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs font-bold text-points">+{a.points}</span>
+                  <span className="text-xs font-bold text-points">+{a.points}助力值</span>
                   {a.daily && <p className="text-[10px] text-muted-foreground">每日可得</p>}
                 </div>
               </button>
@@ -80,7 +80,7 @@ const HelpCenter = () => {
           >
             <span className="text-2xl">📖</span>
             <p className="mt-1 text-sm font-medium text-foreground">救助指南</p>
-            <p className="text-xs text-muted-foreground">学习即获积分</p>
+            <p className="text-xs text-muted-foreground">学习即获助力值</p>
           </button>
         </div>
 

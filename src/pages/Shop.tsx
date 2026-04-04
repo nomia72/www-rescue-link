@@ -73,7 +73,7 @@ const Shop = () => {
               <p className="mt-2 text-sm font-medium text-foreground line-clamp-1">{item.name}</p>
               <div className="mt-1 flex items-center justify-between">
                 <span className="text-sm font-bold text-foreground">{item.price}</span>
-                <span className="rounded-full bg-points/15 px-2 py-0.5 text-[10px] font-medium text-points">+{item.points}积分</span>
+                <span className="rounded-full bg-points/15 px-2 py-0.5 text-[10px] font-medium text-points">+{item.points}助力值</span>
               </div>
             </button>
           ))}

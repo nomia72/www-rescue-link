@@ -15,7 +15,7 @@ const UploadEvidence = () => {
         <div className="flex min-h-screen flex-col items-center justify-center px-6">
           <CheckCircle2 className="h-16 w-16 text-primary" />
           <h2 className="mt-4 text-lg font-bold text-foreground">上传成功！</h2>
-          <p className="mt-2 text-center text-sm text-muted-foreground">凭证已提交，将在确认后获得公益积分记录</p>
+          <p className="mt-2 text-center text-sm text-muted-foreground"><p className="mt-2 text-center text-sm text-muted-foreground">凭证已提交，将在确认后获得助力值记录</p></p>
           {/* Chain placeholder */}
           <div className="mt-4 w-full rounded-xl border border-dashed border-border bg-muted/30 p-4">
             <div className="flex items-center gap-2">

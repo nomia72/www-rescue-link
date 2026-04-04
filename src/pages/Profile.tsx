@@ -9,7 +9,7 @@ const menuItems = [
   { label: '我关注的个案', count: mockUser.casesFollowed, icon: '⭐' },
   { label: '我参与的助力', count: mockUser.helpsGiven, icon: '🤝' },
   { label: '我更新的记录', count: 5, icon: '📋' },
-  { label: '积分记录', count: null, icon: '💰' },
+  { label: '助力值记录', count: null, icon: '💰' },
 ];
 
 const Profile = () => {
@@ -32,7 +32,7 @@ const Profile = () => {
         <div className="mt-3 flex items-center justify-around rounded-xl bg-header-accent/60 p-3">
           <div className="text-center">
             <p className="text-xl font-bold text-header-fg">{mockUser.totalPoints}</p>
-            <p className="text-[10px] text-header-fg/60">总积分</p>
+            <p className="text-[10px] text-header-fg/60">总助力值</p>
           </div>
           <div className="h-8 w-px bg-header-fg/15" />
           <div className="text-center">
@@ -81,14 +81,14 @@ const Profile = () => {
 
         {/* Points Source */}
         <div className="mt-4 rounded-xl bg-card p-4 shadow-sm">
-          <h3 className="text-sm font-semibold text-foreground">💰 最近积分记录</h3>
+          <h3 className="text-sm font-semibold text-foreground">💰 最近助力值记录</h3>
           <div className="mt-3 space-y-2">
             {[
-              { action: '分享救助个案', points: '+5', time: '今天 14:30' },
-              { action: '阅读救助指南', points: '+10', time: '今天 12:00' },
-              { action: '购买公益文创', points: '+15', time: '昨天 18:20' },
-              { action: '赠送积分给个案', points: '-50', time: '昨天 10:00' },
-              { action: '邀请新用户', points: '+20', time: '3天前' },
+              { action: '分享救助个案', points: '+5助力值', time: '今天 14:30' },
+              { action: '阅读救助指南', points: '+10助力值', time: '今天 12:00' },
+              { action: '购买公益文创', points: '+15助力值', time: '昨天 18:20' },
+              { action: '扩散个案海报', points: '+10助力值', time: '昨天 10:00' },
+              { action: '邀请新用户', points: '+20助力值', time: '3天前' },
             ].map((r, i) => (
               <div key={i} className="flex items-center justify-between rounded-lg bg-muted/50 px-3 py-2">
                 <div>

@@ -187,7 +187,7 @@ const LostPetMap = () => {
                   </div>
                   {clue.note && <p className="mt-1.5 text-[11px] text-foreground">{clue.note}</p>}
                   {clue.status === '已采纳' && (
-                    <p className="mt-1 text-[10px] text-primary">✨ 线索被采纳，获得 {clue.points} 积分</p>
+                    <p className="mt-1 text-[10px] text-primary"><p className="mt-1 text-[10px] text-primary">✨ 线索被采纳，获得 {clue.points} 助力值</p></p>
                   )}
                 </div>
               ))}
@@ -324,7 +324,7 @@ const LostPetMap = () => {
             >
               提交
             </button>
-            <p className="mt-2 text-center text-[10px] text-muted-foreground">提交有效线索可获得积分奖励</p>
+            <p className="mt-2 text-center text-[10px] text-muted-foreground"><p className="mt-2 text-center text-[10px] text-muted-foreground">提交有效线索可获得助力值奖励</p></p>
           </div>
         </div>
       )}
