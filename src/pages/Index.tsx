@@ -67,7 +67,7 @@ const Index = () => {
             </Avatar>
             <div className="min-w-0">
               <p className="text-[14px] font-bold leading-tight text-[hsl(24,45%,25%)]">{mockUser.name}</p>
-              <p className="mt-0.5 text-[10px] leading-tight text-[hsl(24,30%,50%)]">每一次助力都在被认真记录</p>
+
             </div>
           </div>
 
