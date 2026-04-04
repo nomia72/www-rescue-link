@@ -40,7 +40,7 @@ const PawClapAnimation = ({ onDone }: { onDone: () => void }) => {
 const CaseDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const caseItem = mockCases.find((c) => c.id === id);
+  const caseItem = getCaseById(id || '');
   const [saved, setSaved] = useState(false);
   const [showPawClap, setShowPawClap] = useState(false);
   const [localHeat, setLocalHeat] = useState(0);
