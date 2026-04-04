@@ -340,7 +340,7 @@ const CaseDetail = () => {
               </button>
             </div>
             <p className="mt-2 text-[10px] text-muted-foreground leading-relaxed">
-              分享、扩散和持续更新，都能帮助个案获得更多关注；完成扩散后可累计积分。
+              分享、扩散和持续更新，都能帮助个案获得更多关注；完成扩散后可累计助力值。
             </p>
           </div>
 

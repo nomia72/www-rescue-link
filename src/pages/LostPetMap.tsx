@@ -324,7 +324,7 @@ const LostPetMap = () => {
             >
               提交
             </button>
-            <p className="mt-2 text-center text-[10px] text-muted-foreground">提交有效线索可获得积分奖励</p>
+            <p className="mt-2 text-center text-[10px] text-muted-foreground"><p className="mt-2 text-center text-[10px] text-muted-foreground">提交有效线索可获得助力值奖励</p></p>
           </div>
         </div>
       )}

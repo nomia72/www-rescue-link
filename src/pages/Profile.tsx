@@ -81,14 +81,14 @@ const Profile = () => {
 
         {/* Points Source */}
         <div className="mt-4 rounded-xl bg-card p-4 shadow-sm">
-          <h3 className="text-sm font-semibold text-foreground">💰 最近积分记录</h3>
+          <h3 className="text-sm font-semibold text-foreground">💰 最近助力值记录</h3>
           <div className="mt-3 space-y-2">
             {[
-              { action: '分享救助个案', points: '+5', time: '今天 14:30' },
-              { action: '阅读救助指南', points: '+10', time: '今天 12:00' },
-              { action: '购买公益文创', points: '+15', time: '昨天 18:20' },
-              { action: '赠送积分给个案', points: '-50', time: '昨天 10:00' },
-              { action: '邀请新用户', points: '+20', time: '3天前' },
+              { action: '分享救助个案', points: '+5助力值', time: '今天 14:30' },
+              { action: '阅读救助指南', points: '+10助力值', time: '今天 12:00' },
+              { action: '购买公益文创', points: '+15助力值', time: '昨天 18:20' },
+              { action: '扩散个案海报', points: '+10助力值', time: '昨天 10:00' },
+              { action: '邀请新用户', points: '+20助力值', time: '3天前' },
             ].map((r, i) => (
               <div key={i} className="flex items-center justify-between rounded-lg bg-muted/50 px-3 py-2">
                 <div>

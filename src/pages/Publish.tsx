@@ -67,12 +67,6 @@ const Publish = () => {
                     >
                       补充进展
                     </button>
-                    <button
-                      onClick={() => navigate('/add-record')}
-                      className="rounded-lg bg-accent/15 px-3 py-1.5 text-[12px] font-medium text-accent-foreground"
-                    >
-                      上传凭证
-                    </button>
                   </div>
                 </div>
               );

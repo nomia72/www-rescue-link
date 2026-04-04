@@ -19,7 +19,7 @@ const Guide = () => {
           {mockGuides.map((g) => (
             <button
               key={g.id}
-              onClick={() => toast.success(`阅读完成，获得 ${g.points} 积分！`)}
+              onClick={() => toast.success(`阅读完成，获得 ${g.points} 助力值！`)}
               className="flex w-full items-center gap-3 rounded-xl bg-card p-4 text-left shadow-sm transition-transform active:scale-[0.98]"
             >
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">

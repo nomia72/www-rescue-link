@@ -33,7 +33,7 @@ const HelpCenter = () => {
                   <p className="text-xs text-muted-foreground">{a.desc}</p>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs font-bold text-points">+{a.points}</span>
+                  <span className="text-xs font-bold text-points">+{a.points}助力值</span>
                   {a.daily && <p className="text-[10px] text-muted-foreground">每日可得</p>}
                 </div>
               </button>
