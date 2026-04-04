@@ -157,3 +157,46 @@ export async function createCaseOnChain(
     metaHashBytes32,
   };
 }
+
+// ─── addUpdate on-chain ──────────────────────────────────────────────
+
+export interface AddUpdateOnChainResult {
+  txHash: string;
+}
+
+/**
+ * Call addUpdate on-chain. Falls back to mock if contract not deployed.
+ */
+export async function addUpdateOnChain(
+  caseIdBytes32: Hex,
+  updateHashBytes32: Hex,
+  updateType: string,
+): Promise<AddUpdateOnChainResult> {
+  if (CONTRACT_ADDRESS === '0x0000000000000000000000000000000000000000') {
+    console.warn('[blockchain] Contract not deployed – returning mock update tx');
+    const mockTx = keccak256(toBytes(`mock-update-${caseIdBytes32}-${Date.now()}`));
+    return { txHash: mockTx };
+  }
+
+  const ethereum = (window as any).ethereum;
+  if (!ethereum) {
+    throw new Error('No wallet detected.');
+  }
+
+  await ethereum.request({ method: 'eth_requestAccounts' });
+
+  const data = encodeFunctionData({
+    abi: RESCUELINK_ABI,
+    functionName: 'addUpdate',
+    args: [caseIdBytes32, updateHashBytes32, updateType],
+  });
+
+  const [account] = await ethereum.request({ method: 'eth_accounts' }) as string[];
+
+  const txHash = await ethereum.request({
+    method: 'eth_sendTransaction',
+    params: [{ from: account, to: CONTRACT_ADDRESS, data, chainId: '0xa869' }],
+  });
+
+  return { txHash: txHash as string };
+}
