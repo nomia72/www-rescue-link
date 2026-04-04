@@ -14,7 +14,7 @@ const Guide = () => {
         <span className="text-sm font-semibold">📖 救助指南</span>
       </div>
       <div className="px-4 pb-6">
-        <p className="mt-3 text-xs text-muted-foreground">学习救助知识，获得公益积分</p>
+        <p className="mt-3 text-xs text-muted-foreground"><p className="mt-3 text-xs text-muted-foreground">学习救助知识，获得助力值</p></p>
         <div className="mt-4 space-y-3">
           {mockGuides.map((g) => (
             <button
