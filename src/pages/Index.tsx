@@ -2,11 +2,12 @@ import { useNavigate } from 'react-router-dom';
 import MobileLayout from '@/components/MobileLayout';
 import { mockUser } from '@/data/mockData';
 import { getAllCases } from '@/lib/caseStore';
-import { Search, Bell, Heart, Map, Package, ShoppingBag, SlidersHorizontal, X } from 'lucide-react';
+import { Search, Bell, Heart, MapPin, Package, ShoppingBag, SlidersHorizontal, X } from 'lucide-react';
 import CaseCard from '@/components/CaseCard';
 import { useState } from 'react';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerClose } from '@/components/ui/drawer';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import avatarImg from '@/assets/avatar.jpg';
 
 const channels = [
   { label: '领养', path: '/channel/adoption', icon: Heart, bg: 'bg-[hsl(30,60%,95%)]', iconColor: 'text-[hsl(24,75%,50%)]', titleColor: 'text-[hsl(24,60%,35%)]' },
@@ -61,6 +62,7 @@ const Index = () => {
           {/* Left: avatar + name + tagline */}
           <div className="flex items-center gap-2.5 min-w-0" style={{ flex: '0 0 38%' }}>
             <Avatar className="h-9 w-9 shrink-0 ring-2 ring-white/60">
+              <AvatarImage src={avatarImg} alt={mockUser.name} />
               <AvatarFallback className="bg-[hsl(28,60%,85%)] text-[hsl(24,60%,35%)] text-[13px] font-bold">
                 {mockUser.name.charAt(0)}
               </AvatarFallback>
@@ -91,7 +93,7 @@ const Index = () => {
         {/* A. Tool bar: search + bell (no location) */}
         <div className="mt-3 flex items-center gap-2">
           <div className="flex items-center gap-1 shrink-0 text-[13px] font-medium text-muted-foreground">
-            <Map className="h-3.5 w-3.5" />
+            <MapPin className="h-3.5 w-3.5" />
             上海
           </div>
           <div className="flex flex-1 items-center gap-2 rounded-xl bg-card px-3.5 py-2.5 shadow-sm">
