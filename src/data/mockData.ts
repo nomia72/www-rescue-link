@@ -133,7 +133,7 @@ export const mockCases: CaseItem[] = [
     updatedAt: '10分钟前',
     isUrgent: true,
     urgencyLevel: '紧急',
-    image: '/src/assets/cat1.jpg',
+    image: '',
     description: '张江镇小区绿化带发现一只受伤橘猫，右前腿疑似骨折，精神较差，需要尽快送医治疗。',
     contact: '微信：rescue_sh_001',
     helpType: 'emergency',
