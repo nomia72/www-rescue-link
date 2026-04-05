@@ -8,9 +8,12 @@ import dog1 from '@/assets/dog1.jpg';
 import cat2 from '@/assets/cat2.jpg';
 import dog2 from '@/assets/dog2.jpg';
 import dog3 from '@/assets/dog3.jpg';
+import adoptCat1 from '@/assets/adopt_cat1.jpg';
+import adoptDog1 from '@/assets/adopt_dog1.jpg';
+import adoptCat2 from '@/assets/adopt_cat2.jpg';
 
-const caseImages: Record<string, string> = { '1': cat1, '2': dog1, '3': cat2, '4': dog2, '5': dog3 };
-const caseNumbers: Record<string, number> = { '1': 241, '2': 242, '3': 243, '4': 244, '5': 245 };
+const caseImages: Record<string, string> = { '1': cat1, '2': dog1, '3': cat2, '4': dog2, '5': dog3, 'a1': adoptCat1, 'a2': adoptDog1, 'a3': adoptCat2 };
+const caseNumbers: Record<string, number> = { '1': 241, '2': 242, '3': 243, '4': 244, '5': 245, 'a1': 301, 'a2': 302, 'a3': 303 };
 
 const PawClapAnimation = ({ onDone }: { onDone: () => void }) => (
   <div className="fixed inset-0 z-[999] flex items-center justify-center pointer-events-none" onAnimationEnd={onDone}>

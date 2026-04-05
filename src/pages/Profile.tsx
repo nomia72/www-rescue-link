@@ -25,7 +25,10 @@ const Profile = () => {
           </div>
           <div>
             <p className="text-base font-bold text-header-fg">{mockUser.name}</p>
-            <p className="text-xs text-header-fg/70">{mockUser.level}</p>
+            <div className="flex items-center gap-1.5">
+              <p className="text-xs text-header-fg/70">ID：12345</p>
+              <span className="rounded bg-[hsl(24,80%,50%)] px-1.5 py-0.5 text-[10px] font-medium text-white">已实名认证</span>
+            </div>
           </div>
         </div>
 
