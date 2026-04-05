@@ -2,6 +2,7 @@ import MobileLayout from '@/components/MobileLayout';
 import { mockUser } from '@/data/mockData';
 import { ChevronRight, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import avatarImg from '@/assets/avatar.jpg';
 
 const menuItems = [
   { label: '我的订单', count: null, icon: '📦' },
@@ -20,14 +21,14 @@ const Profile = () => {
       {/* Header */}
       <div className="bg-header-bg px-4 pb-5 pt-10">
         <div className="flex items-center gap-3">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-header-accent text-2xl">
-            😊
+          <div className="h-14 w-14 overflow-hidden rounded-full ring-2 ring-white/40">
+            <img src={avatarImg} alt={mockUser.name} className="h-full w-full object-cover" />
           </div>
           <div>
             <p className="text-base font-bold text-header-fg">{mockUser.name}</p>
             <div className="flex items-center gap-1.5">
               <p className="text-xs text-header-fg/70">ID：12345</p>
-              <span className="rounded bg-[hsl(24,80%,50%)] px-1.5 py-0.5 text-[10px] font-medium text-white">已实名认证</span>
+              <span className="rounded bg-[hsl(24,80%,50%)] px-1.5 py-0.5 text-[10px] font-medium text-white">已实名</span>
             </div>
           </div>
         </div>
