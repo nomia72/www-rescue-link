@@ -152,8 +152,7 @@ const Index = () => {
         </div>
 
         {/* E. Case feed */}
-        <div className="mt-3 pb-4">
-          <h2 className="mb-2 text-[15px] font-semibold text-foreground">推荐救助个案</h2>
+        <div className="mt-1 pb-4">
           {allCases.map((c) => (
             <CaseCard key={c.id} caseItem={c} />
           ))}
